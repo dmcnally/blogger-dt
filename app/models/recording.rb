@@ -1,6 +1,7 @@
 class Recording < ApplicationRecord
   include Eventable
   include Tree
+  include Commenter
 
   delegated_type :recordable, types: %w[Article Comment], autosave: true
 
@@ -9,10 +10,6 @@ class Recording < ApplicationRecord
   # Identify as the delegated type for routing purposes
   def model_name
     recordable_type&.constantize&.model_name || super
-  end
-
-  def comments
-    children.where(recordable_type: "Comment")
   end
 
   private
