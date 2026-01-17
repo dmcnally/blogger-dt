@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_17_170419) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_17_180450) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -33,13 +33,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_17_170419) do
     t.bigint "eventable_id", null: false
     t.string "eventable_type", null: false
     t.bigint "person_id"
-    t.bigint "recordable_id", null: false
-    t.bigint "recordable_previous_id"
-    t.string "recordable_previous_type"
-    t.string "recordable_type", null: false
+    t.bigint "subject_id", null: false
+    t.bigint "subject_previous_id"
+    t.string "subject_previous_type"
+    t.string "subject_type", null: false
     t.index ["eventable_type", "eventable_id"], name: "index_events_on_eventable_type_and_eventable_id"
-    t.index ["recordable_previous_type", "recordable_previous_id"], name: "index_events_on_recordable_previous"
-    t.index ["recordable_type", "recordable_id"], name: "index_events_on_recordable_type_and_recordable_id"
+    t.index ["subject_previous_type", "subject_previous_id"], name: "index_events_on_subject_previous"
+    t.index ["subject_type", "subject_id"], name: "index_events_on_subject_type_and_subject_id"
   end
 
   create_table "recordings", force: :cascade do |t|
