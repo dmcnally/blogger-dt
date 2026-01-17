@@ -2,7 +2,7 @@ class Recording < ApplicationRecord
   include Eventable
   include Tree
 
-  delegated_type :recordable, types: %w[Article], autosave: true
+  delegated_type :recordable, types: %w[Article Comment], autosave: true
 
   validates_associated :recordable
 
