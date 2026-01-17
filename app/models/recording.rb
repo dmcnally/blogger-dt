@@ -11,6 +11,10 @@ class Recording < ApplicationRecord
     recordable_type&.constantize&.model_name || super
   end
 
+  def comments
+    children.where(recordable_type: "Comment")
+  end
+
   private
 
   # Eventable implementation

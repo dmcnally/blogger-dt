@@ -35,7 +35,7 @@
       <h2 class="text-2xl font-bold text-gray-900 mb-6">Comments</h2>
 
       <div id="comments" class="space-y-4 mb-6">
-        <% @recording.recordable.comments.each do |comment_recording| %>
+        <% @recording.comments.each do |comment_recording| %>
           <%= render partial: "comments/comment", locals: { comment_recording: comment_recording } %>
         <% end %>
       </div>
