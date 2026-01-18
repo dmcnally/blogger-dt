@@ -34,6 +34,21 @@
   margin-top: 0.5rem;
 }
 
+.comment__author {
+  font-weight: 500;
+  color: #374151;
+}
+
+.comment__timestamp {
+  color: #9ca3af;
+}
+
+.comment__author + .comment__timestamp::before {
+  content: "·";
+  margin: 0 0.5rem;
+  color: #9ca3af;
+}
+
 .comment__actions {
   margin-left: 1rem;
 }

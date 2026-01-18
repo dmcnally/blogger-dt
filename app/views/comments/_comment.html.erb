@@ -5,7 +5,8 @@
         <%= simple_format(comment_recording.recordable.body) %>
       </div>
       <div class="comment__meta">
-        <%= time_ago_in_words(comment_recording.created_at) %> ago
+        <span class="comment__author"><%= comment_recording.creator.person_card.name %></span>
+        <span class="comment__timestamp"><%= time_ago_in_words(comment_recording.created_at) %> ago</span>
       </div>
     </div>
     <div class="comment__actions">

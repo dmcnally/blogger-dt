@@ -8,6 +8,10 @@ module Eventable
     after_update :track_updated, if: :subject_changed?
   end
 
+  def creator
+    events.find_by(action: "created").person
+  end
+
   private
 
   def track_created

@@ -8,7 +8,8 @@
         <p class="article-card__excerpt"><%= truncate(recording.recordable.body, length: 200) %></p>
       <% end %>
       <p class="article-card__meta">
-        Created <%= time_ago_in_words(recording.created_at) %> ago
+        <span class="article-card__author"><%= recording.creator.person_card.name %></span>
+        <span class="article-card__timestamp"><%= time_ago_in_words(recording.created_at) %> ago</span>
       </p>
     </div>
     <div class="article-card__actions">
