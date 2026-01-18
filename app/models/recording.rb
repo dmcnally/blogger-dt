@@ -2,8 +2,9 @@ class Recording < ApplicationRecord
   include Eventable
   include Tree
   include Commenter
+  include Publisher
 
-  delegated_type :recordable, types: %w[Article Comment], autosave: true
+  delegated_type :recordable, types: %w[Article Comment PublicationState], autosave: true
 
   validates_associated :recordable
 

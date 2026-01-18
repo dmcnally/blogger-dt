@@ -6,4 +6,8 @@ class Article < ApplicationRecord
   def commentable?
     true
   end
+
+  def publishable?
+    true
+  end
 end

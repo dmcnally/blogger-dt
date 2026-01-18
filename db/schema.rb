@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_17_183607) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_17_213033) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -44,6 +44,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_17_183607) do
     t.index ["eventable_type", "eventable_id"], name: "index_events_on_eventable_type_and_eventable_id"
     t.index ["subject_previous_type", "subject_previous_id"], name: "index_events_on_subject_previous"
     t.index ["subject_type", "subject_id"], name: "index_events_on_subject_type_and_subject_id"
+  end
+
+  create_table "publication_states", force: :cascade do |t|
+    t.string "state", null: false
+    t.index ["state"], name: "index_publication_states_on_state", unique: true
   end
 
   create_table "recordings", force: :cascade do |t|

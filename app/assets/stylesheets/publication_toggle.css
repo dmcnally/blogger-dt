@@ -1,0 +1,32 @@
+/* Block */
+.publication-toggle {
+  display: inline-block;
+}
+
+/* Element */
+.publication-toggle__button {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Modifiers */
+.publication-toggle__button--publish {
+  background-color: #16a34a; /* green */
+}
+
+.publication-toggle__button--publish:hover {
+  background-color: #15803d;
+}
+
+.publication-toggle__button--unpublish {
+  background-color: #d97706; /* amber */
+}
+
+.publication-toggle__button--unpublish:hover {
+  background-color: #b45309;
+}

@@ -3,6 +3,7 @@ module Recordable
 
   included do
     include Commentable
+    include Publishable
 
     # Enforce immutability
     before_update { raise ActiveRecord::ReadOnlyRecord }

@@ -1,0 +1,13 @@
+<div id="<%= dom_id(recording, :publication) %>" class="publication-toggle">
+  <% if recording.published? %>
+    <%= button_to "Unpublish",
+        recording_publication_path(recording),
+        method: :delete,
+        class: "publication-toggle__button publication-toggle__button--unpublish" %>
+  <% else %>
+    <%= button_to "Publish",
+        recording_publication_path(recording),
+        method: :post,
+        class: "publication-toggle__button publication-toggle__button--publish" %>
+  <% end %>
+</div>
