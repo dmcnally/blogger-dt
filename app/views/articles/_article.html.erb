@@ -1,19 +1,19 @@
-<article class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-  <div class="flex justify-between items-start">
-    <div class="flex-1">
-      <h2 class="text-xl font-semibold text-gray-900 mb-2">
-        <%= link_to recording.recordable.title, recording, class: "hover:text-blue-600 transition-colors" %>
+<article class="article-card">
+  <div class="article-card__layout">
+    <div class="article-card__content">
+      <h2 class="article-card__title">
+        <%= link_to recording.recordable.title, recording, class: "article-card__title-link" %>
       </h2>
       <% if recording.recordable.body.present? %>
-        <p class="text-gray-600 line-clamp-2"><%= truncate(recording.recordable.body, length: 200) %></p>
+        <p class="article-card__excerpt"><%= truncate(recording.recordable.body, length: 200) %></p>
       <% end %>
-      <p class="text-sm text-gray-400 mt-3">
+      <p class="article-card__meta">
         Created <%= time_ago_in_words(recording.created_at) %> ago
       </p>
     </div>
-    <div class="flex gap-2 ml-4">
-      <%= link_to "Edit", edit_article_path(recording), class: "text-sm text-gray-500 hover:text-blue-600 transition-colors" %>
-      <%= button_to "Delete", recording, method: :delete, class: "text-sm text-gray-500 hover:text-red-600 transition-colors", form: { data: { turbo_confirm: "Are you sure you want to delete this article?" } } %>
+    <div class="article-card__actions">
+      <%= link_to "Edit", edit_article_path(recording), class: "btn btn--link" %>
+      <%= button_to "Delete", recording, method: :delete, class: "btn btn--link btn--link-danger", form: { data: { turbo_confirm: "Are you sure you want to delete this article?" } } %>
     </div>
   </div>
 </article>

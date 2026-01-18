@@ -1,0 +1,39 @@
+/* Block: comment */
+.comment {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.comment__layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.comment__content {
+  flex: 1;
+}
+
+.comment__body {
+  color: #374151;
+}
+
+.comment__body p {
+  margin-bottom: 0.5rem;
+}
+
+.comment__body p:last-child {
+  margin-bottom: 0;
+}
+
+.comment__meta {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 0.5rem;
+}
+
+.comment__actions {
+  margin-left: 1rem;
+}

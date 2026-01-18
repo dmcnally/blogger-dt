@@ -1,8 +1,8 @@
 <div id="comment_form">
-  <%= form_with model: comment, url: recording_comments_path(parent_recording), class: "space-y-4" do |form| %>
+  <%= form_with model: comment, url: recording_comments_path(parent_recording), class: "comment-form" do |form| %>
     <% if comment.errors.any? %>
-      <div class="bg-red-50 border border-red-200 rounded-lg p-3">
-        <ul class="list-disc list-inside text-red-700 text-sm">
+      <div class="form-errors">
+        <ul class="form-errors__list">
           <% comment.errors.each do |error| %>
             <li><%= error.full_message %></li>
           <% end %>
@@ -10,16 +10,15 @@
       </div>
     <% end %>
 
-    <div>
+    <div class="comment-form__field">
       <%= form.text_area :body,
             rows: 3,
-            class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-y",
+            class: "comment-form__input",
             placeholder: "Write a comment..." %>
     </div>
 
-    <div>
-      <%= form.submit "Add Comment",
-            class: "bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors cursor-pointer" %>
+    <div class="comment-form__actions">
+      <%= form.submit "Add Comment", class: "btn btn--primary" %>
     </div>
   <% end %>
 </div>

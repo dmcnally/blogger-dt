@@ -1,9 +1,7 @@
-<div class="container mx-auto px-4 py-8 max-w-2xl">
-  <div class="mb-6">
-    <%= link_to "&larr; Back to Articles".html_safe, articles_path, class: "text-blue-600 hover:text-blue-800 transition-colors" %>
-  </div>
+<div class="page page--narrow">
+  <%= link_to "&larr; Back to Articles".html_safe, articles_path, class: "back-link" %>
 
-  <h1 class="text-3xl font-bold text-gray-900 mb-8">New Article</h1>
+  <h1 class="page-header__title">New Article</h1>
 
   <%= render "form", article: @article %>
 </div>
