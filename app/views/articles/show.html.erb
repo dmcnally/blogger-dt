@@ -30,6 +30,9 @@
     <% end %>
   </div>
 
+  <%# Timeline Section %>
+  <%= render "timelines/timeline", recording: @recording %>
+
   <%# Comments Section %>
   <% if @recording.recordable.commentable? %>
     <section class="comments-section">

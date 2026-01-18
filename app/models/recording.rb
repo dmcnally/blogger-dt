@@ -1,6 +1,7 @@
 class Recording < ApplicationRecord
   include Eventable
   include Tree
+  include Timeline
   include Commenter
   include Publisher
 

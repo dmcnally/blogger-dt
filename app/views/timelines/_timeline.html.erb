@@ -1,0 +1,28 @@
+<section class="timeline">
+  <h3 class="timeline__title">Timeline</h3>
+
+  <% if recording.timeline_events.any? %>
+    <ul class="timeline__list">
+      <% recording.timeline_events.each do |event| %>
+        <li class="timeline__entry">
+          <span class="timeline__action timeline__action--<%= event.action %>">
+            <%= event.action.capitalize %>
+          </span>
+          <span class="timeline__subject">
+            <%= event.subject_type.underscore.humanize.downcase %>
+          </span>
+          <% if event.person&.person_card %>
+            <span class="timeline__actor">
+              by <%= event.person.person_card.name %>
+            </span>
+          <% end %>
+          <time class="timeline__time" datetime="<%= event.created_at.iso8601 %>">
+            <%= time_ago_in_words(event.created_at) %> ago
+          </time>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="timeline__empty">No events recorded yet.</p>
+  <% end %>
+</section>
