@@ -10,6 +10,10 @@ class PublicationState < ApplicationRecord
     state == PUBLISHED
   end
 
+  def event_action
+    published? ? "published" : "unpublished"
+  end
+
   class << self
     def published
       find_or_create_by!(state: PUBLISHED)

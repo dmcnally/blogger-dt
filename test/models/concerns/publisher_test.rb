@@ -64,4 +64,33 @@ class PublisherTest < ActiveSupport::TestCase
     @recording.publish!
     assert_equal PublicationState.published, @recording.publication_recording.recordable
   end
+
+  test "publish! creates event with published action" do
+    @recording.publish!
+    publication_recording = @recording.publication_recording
+    event = publication_recording.events.last
+
+    assert_equal "published", event.action
+    assert_equal PublicationState.published, event.subject
+  end
+
+  test "unpublish! creates event with unpublished action" do
+    @recording.unpublish!
+    publication_recording = @recording.publication_recording
+    event = publication_recording.events.last
+
+    assert_equal "unpublished", event.action
+    assert_equal PublicationState.not_published, event.subject
+  end
+
+  test "toggling publish state creates events with correct actions" do
+    @recording.publish!
+    @recording.unpublish!
+    @recording.publish!
+
+    publication_recording = @recording.publication_recording
+    actions = publication_recording.events.order(:created_at).pluck(:action)
+
+    assert_equal %w[published unpublished published], actions
+  end
 end

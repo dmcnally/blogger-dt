@@ -17,7 +17,7 @@ module Eventable
   def track_created
     events.create!(
       subject: current_subject,
-      action: "created",
+      action: action_for_create,
       person_id: current_person_id
     )
   end
@@ -27,9 +27,21 @@ module Eventable
       subject: current_subject,
       subject_previous_type: previous_subject_type,
       subject_previous_id: previous_subject_id,
-      action: "updated",
+      action: action_for_update,
       person_id: current_person_id
     )
+  end
+
+  def action_for_create
+    current_subject_event_action || "created"
+  end
+
+  def action_for_update
+    current_subject_event_action || "updated"
+  end
+
+  def current_subject_event_action
+    current_subject.event_action if current_subject.respond_to?(:event_action)
   end
 
   def current_person_id

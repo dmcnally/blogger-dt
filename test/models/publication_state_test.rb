@@ -43,4 +43,14 @@ class PublicationStateTest < ActiveSupport::TestCase
     refute duplicate.valid?
     assert_includes duplicate.errors[:state], "has already been taken"
   end
+
+  test "event_action returns published when state is published" do
+    publication_state = PublicationState.published
+    assert_equal "published", publication_state.event_action
+  end
+
+  test "event_action returns unpublished when state is notPublished" do
+    publication_state = PublicationState.not_published
+    assert_equal "unpublished", publication_state.event_action
+  end
 end
