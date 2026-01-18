@@ -2,24 +2,9 @@
   <h3 class="timeline__title">Timeline</h3>
 
   <% if recording.timeline_events.any? %>
-    <ul class="timeline__list">
+    <ul id="<%= dom_id(recording, :timeline_events) %>" class="timeline__list">
       <% recording.timeline_events.each do |event| %>
-        <li class="timeline__entry">
-          <span class="timeline__action timeline__action--<%= event.action %>">
-            <%= event.action.capitalize %>
-          </span>
-          <span class="timeline__subject">
-            <%= event.subject.timeline_description(event) %>
-          </span>
-          <% if event.person&.person_card %>
-            <span class="timeline__actor">
-              by <%= event.person.person_card.name %>
-            </span>
-          <% end %>
-          <time class="timeline__time" datetime="<%= event.created_at.iso8601 %>">
-            <%= time_ago_in_words(event.created_at) %> ago
-          </time>
-        </li>
+        <%= render "timelines/event", event: event %>
       <% end %>
     </ul>
   <% else %>
