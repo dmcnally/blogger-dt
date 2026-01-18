@@ -4,7 +4,7 @@ class Recording < ApplicationRecord
   include Commenter
   include Publisher
 
-  delegated_type :recordable, types: %w[Article Comment PublicationState], autosave: true
+  delegated_type :recordable, types: %w[Article Comment PublicationState PersonCard], autosave: true
 
   validates_associated :recordable
 

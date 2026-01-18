@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_17_213033) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_18_130411) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,8 +42,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_17_213033) do
     t.string "subject_previous_type"
     t.string "subject_type", null: false
     t.index ["eventable_type", "eventable_id"], name: "index_events_on_eventable_type_and_eventable_id"
+    t.index ["person_id"], name: "index_events_on_person_id"
     t.index ["subject_previous_type", "subject_previous_id"], name: "index_events_on_subject_previous"
     t.index ["subject_type", "subject_id"], name: "index_events_on_subject_type_and_subject_id"
+  end
+
+  create_table "people", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "recording_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recording_id"], name: "index_people_on_recording_id"
+  end
+
+  create_table "person_cards", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
   end
 
   create_table "publication_states", force: :cascade do |t|
@@ -62,5 +75,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_17_213033) do
   end
 
   add_foreign_key "event_details", "events"
+  add_foreign_key "events", "people"
+  add_foreign_key "people", "recordings"
   add_foreign_key "recordings", "recordings", column: "parent_id"
 end

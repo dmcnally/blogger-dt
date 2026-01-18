@@ -11,3 +11,10 @@
 # PublicationState singletons
 PublicationState.published
 PublicationState.not_published
+
+# Default Person (until authentication is implemented)
+if Person.none?
+  person_card = PersonCard.create!(first_name: "David", last_name: "McNally")
+  recording = Recording.create!(recordable: person_card)
+  Person.create!(recording: recording)
+end
