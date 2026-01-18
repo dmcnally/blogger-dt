@@ -15,7 +15,7 @@ class PublicationState < ApplicationRecord
   end
 
   def timeline_description(event)
-    event.eventable.parent&.recordable&.timeline_description(event)
+    event.eventable.ancestor_at(Article, event)&.timeline_description(event)
   end
 
   class << self
