@@ -8,13 +8,6 @@ class CommentsController < ApplicationController
     )
 
     if @comment_recording.save
-      Turbo::StreamsChannel.broadcast_append_to(
-        @parent_recording, "comments",
-        target: "comments",
-        partial: "comments/comment",
-        locals: { comment_recording: @comment_recording }
-      )
-
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to @parent_recording, notice: "Comment was successfully added." }
@@ -28,11 +21,6 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    Turbo::StreamsChannel.broadcast_remove_to(
-      @parent_recording, "comments",
-      target: ActionView::RecordIdentifier.dom_id(@comment_recording)
-    )
-
     @comment_recording.destroy!
     respond_to do |format|
       format.turbo_stream
