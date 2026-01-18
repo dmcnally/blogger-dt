@@ -9,7 +9,7 @@
             <%= event.action.capitalize %>
           </span>
           <span class="timeline__subject">
-            <%= event.subject_type.underscore.humanize.downcase %>
+            <%= event.subject.timeline_description(event) %>
           </span>
           <% if event.person&.person_card %>
             <span class="timeline__actor">

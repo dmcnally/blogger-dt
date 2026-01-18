@@ -10,4 +10,8 @@ class Article < ApplicationRecord
   def publishable?
     true
   end
+
+  def timeline_description(event)
+    title
+  end
 end

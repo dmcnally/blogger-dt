@@ -3,6 +3,7 @@ module Recordable
 
   included do
     include Commentable
+    include Describable
     include Publishable
 
     # Enforce immutability

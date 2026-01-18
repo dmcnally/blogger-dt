@@ -14,6 +14,10 @@ class PublicationState < ApplicationRecord
     published? ? "published" : "unpublished"
   end
 
+  def timeline_description(event)
+    event.eventable.parent&.recordable&.timeline_description(event)
+  end
+
   class << self
     def published
       find_or_create_by!(state: PUBLISHED)
