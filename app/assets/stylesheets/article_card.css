@@ -52,6 +52,21 @@
   margin-top: 0.75rem;
 }
 
+.article-card__author {
+  font-weight: 500;
+  color: #374151;
+}
+
+.article-card__timestamp {
+  color: #9ca3af;
+}
+
+.article-card__author + .article-card__timestamp::before {
+  content: "·";
+  margin: 0 0.5rem;
+  color: #9ca3af;
+}
+
 .article-card__actions {
   display: flex;
   gap: 0.5rem;
