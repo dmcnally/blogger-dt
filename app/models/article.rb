@@ -1,5 +1,7 @@
 class Article < ApplicationRecord
   include Recordable
+  include Describable
+  include Searchable
 
   validates :title, presence: true
 
@@ -9,17 +11,5 @@ class Article < ApplicationRecord
 
   def publishable?
     true
-  end
-
-  def searchable?
-    true
-  end
-
-  def searchable_content
-    [title, body].compact.join(" ")
-  end
-
-  def timeline_description(event)
-    title
   end
 end
