@@ -1,0 +1,111 @@
+---
+description: Model patterns for delegated types, Recording/Recordable, state recordables, and Person identity
+globs:
+  - app/models/**/*.rb
+  - db/migrate/*.rb
+---
+
+# Model Guidelines
+
+## Delegated Type Pattern
+
+Use Rails `delegated_type` for polymorphic relationships where types have different attributes:
+
+- **Delegator table** stores the polymorphic reference and shared attributes
+- **Delegate tables** store type-specific data
+- Each delegate has `has_one :delegator_name, as: :delegator_type, touch: true`
+
+```ruby
+# Delegator
+class Entry < ApplicationRecord
+  delegated_type :entryable, types: %w[TextContent ImageContent VideoContent]
+end
+
+# Delegate
+class TextContent < ApplicationRecord
+  has_one :entry, as: :entryable, touch: true
+end
+```
+
+## Recording/Recordable Pattern
+
+This application uses Recording/Recordable as the core delegated type implementation:
+
+- **Recording** is the delegator (polymorphic pointer)
+- **Recordables** are immutable delegates (Article, Profile, etc.)
+- Recordables must include the `Recordable` concern
+- Recordings form trees via `parent_id` for related data
+
+### Immutability Rules
+
+- Recordables are **immutable** - no updates, no deletes
+- To "update", create a new recordable row and update the Recording's `recordable_id`
+- Multiple recordings can safely share the same recordable
+
+### No Timestamps on Recordables
+
+Recordable tables do NOT need `created_at`/`updated_at` columns:
+
+```ruby
+# Migration for a recordable - no timestamps
+create_table :articles do |t|
+  t.string :title
+  t.text :body
+  # No t.timestamps - event tracking handles this
+end
+```
+
+## State as Recordables
+
+Represent state changes as child recordings, NOT as fields on the parent model.
+
+### Avoid
+
+```ruby
+class Article < ApplicationRecord
+  # published_at :datetime     # Don't do this
+  # archived_at :datetime      # Don't do this
+end
+```
+
+### Prefer
+
+Create state recordables as children in the recording tree:
+
+```ruby
+# app/models/article/published.rb
+class Article::Published < ApplicationRecord
+  include Recordable
+  # Existence indicates "published" state
+end
+
+# Check state via children
+article_recording.children.exists?(recordable_type: 'Article::Published')
+```
+
+### Namespacing Rules
+
+- **Model-specific states**: Namespace under parent (e.g., `Article::Published`, `Article::Featured`)
+- **Shared states**: Top level without namespace (e.g., `Archived` used by multiple models)
+
+## Person Model Pattern
+
+Separate identity from authentication:
+
+- **Person** = who someone is (identity, owns records)
+- **User** = how someone authenticates (credentials)
+
+### Key Rules
+
+- All ownership references `Person`, not `User` (e.g., `created_by`, `owned_by`)
+- Set `Current.person = user.person` on authentication
+- Person survives User deletion - data remains intact
+- Events track `Current.person` for audit trails
+
+```ruby
+# In authentication flow
+Current.person = current_user&.person
+
+# In models - reference Person for ownership
+belongs_to :creator, class_name: 'Person'
+```

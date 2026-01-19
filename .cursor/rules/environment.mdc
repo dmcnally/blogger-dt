@@ -1,0 +1,50 @@
+---
+description: Docker environment and file path conventions
+alwaysApply: true
+---
+
+# Environment Guidelines
+
+## Docker Command Execution
+
+All shell commands must be executed inside the Docker container. Prefix commands with:
+
+```bash
+docker compose exec web <command>
+```
+
+### Examples
+
+```bash
+# Running Rails commands
+docker compose exec web rails db:migrate
+docker compose exec web rails console
+docker compose exec web rails test
+
+# Running bundle
+docker compose exec web bundle install
+
+# Running rake tasks
+docker compose exec web rake routes
+```
+
+## File Paths for Instrumentation
+
+When writing files for instrumentation, logging, or debugging output, always use `Rails.root` to ensure correct paths inside the container:
+
+```ruby
+# Writing instrumentation files
+File.write(Rails.root.join("tmp", "debug.log"), output)
+
+# Creating directories
+FileUtils.mkdir_p(Rails.root.join("tmp", "instrumentation"))
+
+# Reading/writing any generated files
+path = Rails.root.join("log", "custom.log")
+```
+
+### Why Rails.root?
+
+- Ensures paths resolve correctly inside the Docker container
+- Avoids hardcoded paths that differ between host and container
+- Works consistently across development and test environments

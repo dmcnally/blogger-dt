@@ -1,0 +1,108 @@
+---
+description: View styling conventions and BEM CSS patterns
+globs:
+  - app/views/**/*.erb
+  - app/assets/stylesheets/**/*.css
+---
+
+# View Styling Guidelines
+
+## No Tailwind Utility Classes
+
+This project does NOT use Tailwind CSS. Never add utility classes like `flex`, `p-4`, `text-gray-500`, `bg-white`, etc. to view templates.
+
+## BEM Naming Convention
+
+All CSS classes follow the BEM (Block Element Modifier) methodology:
+
+| Type | Pattern | Example |
+|------|---------|---------|
+| Block | `.block-name` | `.article-card` |
+| Element | `.block-name__element` | `.article-card__title` |
+| Modifier | `.block-name--modifier` | `.btn--primary` |
+
+### Naming Rules
+
+- Use lowercase with hyphens for multi-word names
+- Blocks describe the component (noun): `article-card`, `comment`, `btn`
+- Elements describe the part: `__title`, `__content`, `__actions`
+- Modifiers describe variation: `--primary`, `--danger`, `--narrow`
+
+## CSS File Organization
+
+Create one CSS file per component in `app/assets/stylesheets/`:
+
+```
+app/assets/stylesheets/
+├── application.css
+├── page_layout.css      # .page, .page-header, .back-link
+├── button.css           # .btn and modifiers
+├── form.css             # .form, .form-field, .form-errors
+├── article_card.css     # .article-card
+├── article_detail.css   # .article-detail, .comments-section
+├── comment.css          # .comment
+├── comment_form.css     # .comment-form
+├── empty_state.css      # .empty-state
+└── publication_toggle.css
+```
+
+## Exemplar Pattern
+
+Reference `publication_toggle.css` and `publications/_toggle.html.erb` as the canonical example:
+
+```css
+/* Block */
+.publication-toggle {
+  display: inline-block;
+}
+
+/* Element */
+.publication-toggle__button {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  /* ... */
+}
+
+/* Modifiers */
+.publication-toggle__button--publish {
+  background-color: #16a34a;
+}
+
+.publication-toggle__button--unpublish {
+  background-color: #d97706;
+}
+```
+
+```erb
+<div class="publication-toggle">
+  <%= button_to "Publish", path, class: "publication-toggle__button publication-toggle__button--publish" %>
+</div>
+```
+
+## Available Blocks
+
+### Layout
+- `.page` - Page container with centered content (modifiers: `--narrow`, `--medium`)
+- `.page-header` - Page title + action area
+- `.back-link` - Navigation back link
+
+### Components
+- `.btn` - Buttons (modifiers: `--primary`, `--secondary`, `--danger`, `--link`, `--link-danger`)
+- `.article-card` - Article listing card
+- `.article-detail` - Article show page
+- `.comment` - Single comment display
+- `.empty-state` - Empty state message
+
+### Forms
+- `.form` - Form container
+- `.form-field` - Single form field wrapper
+- `.form-errors` - Error message box
+- `.form-actions` - Form button container
+- `.comment-form` - Comment-specific form
+
+## Adding New Components
+
+1. Create a new CSS file: `app/assets/stylesheets/component_name.css`
+2. Define the block and its elements/modifiers
+3. Use semantic class names that describe purpose, not appearance
+4. Add hover/focus states with `transition` for smooth effects
