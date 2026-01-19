@@ -5,6 +5,7 @@ class Recording < ApplicationRecord
   include Commenter
   include Publisher
   include Broadcaster
+  include Searcher
 
   delegated_type :recordable, types: %w[Article Comment PublicationState PersonCard], autosave: true
 

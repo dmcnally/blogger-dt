@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_18_132121) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_19_141253) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -74,8 +74,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_18_132121) do
     t.index ["recordable_type", "recordable_id"], name: "index_recordings_on_recordable_type_and_recordable_id"
   end
 
+  create_table "search_indices", force: :cascade do |t|
+    t.text "content", null: false
+    t.string "recordable_type", null: false
+    t.bigint "recording_id", null: false
+    t.virtual "searchable", type: :tsvector, as: "to_tsvector('english'::regconfig, content)", stored: true
+    t.index ["recordable_type"], name: "index_search_indices_on_recordable_type"
+    t.index ["recording_id"], name: "index_search_indices_on_recording_id", unique: true
+    t.index ["searchable"], name: "index_search_indices_on_searchable", using: :gin
+  end
+
   add_foreign_key "event_details", "events"
   add_foreign_key "events", "people"
   add_foreign_key "people", "recordings"
   add_foreign_key "recordings", "recordings", column: "parent_id"
+  add_foreign_key "search_indices", "recordings"
 end

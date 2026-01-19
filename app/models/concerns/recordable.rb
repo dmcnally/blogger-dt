@@ -6,6 +6,7 @@ module Recordable
     include Commentable
     include Describable
     include Publishable
+    include Searchable
 
     # Enforce immutability
     before_update { raise ActiveRecord::ReadOnlyRecord }

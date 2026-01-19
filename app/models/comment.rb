@@ -7,6 +7,14 @@ class Comment < ApplicationRecord
     true
   end
 
+  def searchable?
+    true
+  end
+
+  def searchable_content
+    body
+  end
+
   def timeline_description(event)
     article = event.eventable.ancestor_at(Article, event)
     "comment on #{article&.timeline_description(event)}"
