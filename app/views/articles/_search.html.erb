@@ -1,0 +1,4 @@
+<%= form_with url: articles_path, method: :get, class: "search-form", data: { turbo_frame: "articles", turbo_action: "advance" } do |f| %>
+  <%= f.text_field :q, value: params[:q], placeholder: "Search articles...", class: "search-form__input" %>
+  <%= f.submit "Search", class: "btn btn--primary" %>
+<% end %>

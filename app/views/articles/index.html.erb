@@ -4,14 +4,18 @@
     <%= link_to "New Article", new_article_path, class: "btn btn--primary" %>
   </div>
 
-  <% if @recordings.any? %>
-    <div class="article-list">
-      <%= render partial: "article", collection: @recordings, as: :recording %>
-    </div>
-  <% else %>
-    <div class="empty-state">
-      <p class="empty-state__message">No articles yet.</p>
-      <p class="empty-state__hint">Get started by creating your first article.</p>
-    </div>
+  <%= render "search" %>
+
+  <%= turbo_frame_tag "articles" do %>
+    <% if @recordings.any? %>
+      <div class="article-list">
+        <%= render partial: "article", collection: @recordings, as: :recording %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <p class="empty-state__message">No articles yet.</p>
+        <p class="empty-state__hint">Get started by creating your first article.</p>
+      </div>
+    <% end %>
   <% end %>
 </div>

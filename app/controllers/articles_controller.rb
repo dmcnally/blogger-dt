@@ -2,7 +2,11 @@ class ArticlesController < ApplicationController
   before_action :set_recording, only: [:show, :edit, :update, :destroy]
 
   def index
-    @recordings = Recording.articles.order(created_at: :desc)
+    @recordings = if params[:q].present?
+      Recording.search(params[:q], recordable_type: "Article").order(created_at: :desc)
+    else
+      Recording.articles.order(created_at: :desc)
+    end
   end
 
   def show
