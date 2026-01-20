@@ -1,3 +1,4 @@
+<%= turbo_stream_from @recording %>
 <div class="page page--medium">
   <%= link_to "&larr; Back to Articles".html_safe, articles_path, class: "back-link" %>
 
@@ -38,7 +39,7 @@
   <% if @recording.recordable.commentable? %>
     <section class="comments-section">
       <%= turbo_stream_from @recording, "comments" %>
-      <h2 class="comments-section__title">Comments</h2>
+      <h2 class="comments-section__title">Comments (<%= render CounterCache.for(@recording, "comments") %>)</h2>
 
       <div id="comments" class="comments-section__list">
         <% @recording.comments.each do |comment_recording| %>

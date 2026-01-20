@@ -67,6 +67,12 @@
   color: #9ca3af;
 }
 
+.article-card__comments::before {
+  content: "·";
+  margin: 0 0.5rem;
+  color: #9ca3af;
+}
+
 .article-card__actions {
   display: flex;
   gap: 0.5rem;

@@ -14,11 +14,15 @@ module Counter
   def increment_counter!(name)
     cache = counter_caches.find_or_create_by!(name: name.to_s)
     CounterCache.increment_counter(:count, cache.id)
+    cache.reload.broadcast_update
   end
 
   def decrement_counter!(name)
     cache = counter_caches.find_by(name: name.to_s)
-    CounterCache.decrement_counter(:count, cache.id) if cache&.count&.positive?
+    if cache&.count&.positive?
+      CounterCache.decrement_counter(:count, cache.id)
+      cache.reload.broadcast_update
+    end
   end
 
   def refresh_counter!(name)

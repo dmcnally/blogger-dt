@@ -1,3 +1,4 @@
+<%= turbo_stream_from recording %>
 <article class="article-card">
   <div class="article-card__layout">
     <div class="article-card__content">
@@ -10,6 +11,10 @@
       <p class="article-card__meta">
         <span class="article-card__author"><%= recording.creator.person_card.name %></span>
         <span class="article-card__timestamp"><%= time_ago_in_words(recording.created_at) %> ago</span>
+        <span class="article-card__comments">
+          <%= render CounterCache.for(recording, "comments") %>
+          comments
+        </span>
       </p>
     </div>
     <div class="article-card__actions">
