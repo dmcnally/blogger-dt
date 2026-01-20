@@ -2,7 +2,7 @@
   <div class="article-card__layout">
     <div class="article-card__content">
       <h2 class="article-card__title">
-        <%= link_to recording.recordable.title, recording, class: "article-card__title-link" %>
+        <%= link_to recording.recordable.title, recording, class: "article-card__title-link", data: { turbo_frame: "_top" } %>
       </h2>
       <% if recording.recordable.body.present? %>
         <p class="article-card__excerpt"><%= truncate(recording.recordable.body, length: 200) %></p>
