@@ -9,5 +9,6 @@ module Recordable
     include Immutable
     include Publishable
     include Searchable
+    include Taggable
   end
 end

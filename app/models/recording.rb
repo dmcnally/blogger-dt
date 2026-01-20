@@ -7,8 +7,9 @@ class Recording < ApplicationRecord
   include Publisher
   include Broadcaster
   include Searcher
+  include Tagger
 
-  RECORDABLE_TYPES = %w[Article Comment PublicationState PersonCard].freeze
+  RECORDABLE_TYPES = %w[Article Comment PublicationState PersonCard Tag].freeze
 
   delegated_type :recordable, types: RECORDABLE_TYPES, autosave: true
 

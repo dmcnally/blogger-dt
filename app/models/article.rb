@@ -12,4 +12,8 @@ class Article < ApplicationRecord
   def publishable?
     true
   end
+
+  def taggable?
+    true
+  end
 end
