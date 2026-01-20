@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_19_141253) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_20_175719) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -21,6 +21,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_19_141253) do
 
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
+  end
+
+  create_table "counter_caches", force: :cascade do |t|
+    t.integer "count", default: 0, null: false
+    t.bigint "counterable_id", null: false
+    t.string "counterable_type", null: false
+    t.string "name", null: false
+    t.index ["counterable_type", "counterable_id", "name"], name: "index_counter_caches_uniqueness", unique: true
+    t.index ["counterable_type", "counterable_id"], name: "index_counter_caches_on_counterable"
   end
 
   create_table "event_details", force: :cascade do |t|

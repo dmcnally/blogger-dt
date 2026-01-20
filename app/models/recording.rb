@@ -1,4 +1,5 @@
 class Recording < ApplicationRecord
+  include Counter
   include Eventable
   include Tree
   include Timeline
@@ -7,7 +8,9 @@ class Recording < ApplicationRecord
   include Broadcaster
   include Searcher
 
-  delegated_type :recordable, types: %w[Article Comment PublicationState PersonCard], autosave: true
+  RECORDABLE_TYPES = %w[Article Comment PublicationState PersonCard].freeze
+
+  delegated_type :recordable, types: RECORDABLE_TYPES, autosave: true
 
   validates_associated :recordable
 

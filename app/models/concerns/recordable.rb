@@ -4,6 +4,7 @@ module Recordable
   included do
     include Broadcastable
     include Commentable
+    include Countable
     include Describable
     include Immutable
     include Publishable
