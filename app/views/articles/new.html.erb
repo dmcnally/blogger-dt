@@ -1,0 +1,7 @@
+<div class="page page--narrow">
+  <%= link_to "&larr; Back to Articles".html_safe, articles_path, class: "back-link" %>
+
+  <h1 class="page-header__title">New Article</h1>
+
+  <%= render "form", article: @article %>
+</div>

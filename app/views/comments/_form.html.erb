@@ -1,0 +1,24 @@
+<div id="comment_form">
+  <%= form_with model: comment, url: recording_comments_path(parent_recording), class: "comment-form" do |form| %>
+    <% if comment.errors.any? %>
+      <div class="form-errors">
+        <ul class="form-errors__list">
+          <% comment.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="comment-form__field">
+      <%= form.text_area :body,
+            rows: 3,
+            class: "comment-form__input",
+            placeholder: "Write a comment..." %>
+    </div>
+
+    <div class="comment-form__actions">
+      <%= form.submit "Add Comment", class: "btn btn--primary" %>
+    </div>
+  <% end %>
+</div>

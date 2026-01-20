@@ -1,0 +1,5 @@
+<%# Reset the form by replacing it with a fresh one %>
+<%# The new comment is broadcast to all subscribers via Action Cable %>
+<%= turbo_stream.replace "comment_form" do %>
+  <%= render "comments/form", parent_recording: @parent_recording, comment: Comment.new %>
+<% end %>

@@ -1,0 +1,21 @@
+<div id="<%= dom_id(comment_recording) %>" class="comment">
+  <div class="comment__layout">
+    <div class="comment__content">
+      <div class="comment__body">
+        <%= simple_format(comment_recording.recordable.body) %>
+      </div>
+      <div class="comment__meta">
+        <span class="comment__author"><%= comment_recording.creator.person_card.name %></span>
+        <span class="comment__timestamp"><%= time_ago_in_words(comment_recording.created_at) %> ago</span>
+      </div>
+    </div>
+    <div class="comment__actions">
+      <%= button_to recording_comment_path(comment_recording.parent, comment_recording),
+            method: :delete,
+            class: "btn btn--link btn--link-danger",
+            data: { turbo_confirm: "Are you sure you want to delete this comment?" } do %>
+        Delete
+      <% end %>
+    </div>
+  </div>
+</div>

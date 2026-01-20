@@ -1,0 +1,97 @@
+---
+description: Concern organization, specialization patterns, and naming conventions
+globs:
+  - app/models/concerns/**/*.rb
+  - app/models/*/*.rb
+---
+
+# Concern Guidelines
+
+## Directory Structure
+
+```
+app/models/
+├── concerns/                    # Shared concerns (2+ models)
+│   ├── recordable.rb
+│   └── eventable.rb
+├── post/                        # Post-specific concerns
+│   ├── publishing.rb            # Post::Publishing
+│   └── eventable.rb             # Post::Eventable (specializes ::Eventable)
+└── post.rb
+```
+
+## Placement Rules
+
+| Location | When to Use |
+|----------|-------------|
+| `app/models/concerns/` | Shared by 2+ models |
+| `app/models/model_name/` | Specific to one model |
+
+## What Belongs in a Concern
+
+- Related callbacks and validations
+- Scopes that share a common purpose
+- Instance methods that form a cohesive feature
+- Class methods related to a specific capability
+
+## What Does NOT Belong
+
+- Business logic (use service objects)
+- Unrelated methods grouped together
+- Code only used once (keep in the model)
+
+## Naming Conventions
+
+- Use adjectives or nouns describing the capability
+- Examples: `Recordable`, `Sluggable`, `Eventable`, `Publishable`
+- File names use snake_case matching the module name
+
+## Specializing General Concerns
+
+When a model needs to extend a general concern with model-specific behavior:
+
+1. General concern lives in `app/models/concerns/`
+2. Specialized concern lives in `app/models/model_name/`
+3. Specialized concern includes the general concern with `::` prefix
+4. Model just includes the unqualified name - Ruby resolves to namespaced version first
+
+```ruby
+# app/models/concerns/eventable.rb
+module Eventable
+  extend ActiveSupport::Concern
+
+  included do
+    has_many :events, as: :eventable, dependent: :destroy
+  end
+
+  def track_event(action, **details)
+    events.create!(action: action, details: details)
+  end
+end
+
+# app/models/article/eventable.rb
+module Article::Eventable
+  extend ActiveSupport::Concern
+
+  include ::Eventable  # Include general concern with :: prefix
+
+  # Add Article-specific behavior
+  def track_publication(published_by:)
+    track_event(:published, published_by: published_by)
+  end
+end
+
+# app/models/article.rb
+class Article < ApplicationRecord
+  include Eventable  # Ruby resolves to Article::Eventable first
+end
+```
+
+## Promoting Concerns
+
+Start model-specific, promote when needed:
+
+1. Second use case appears
+2. Extract shared behavior to `app/models/concerns/`
+3. Update original to include the general concern
+4. Create new model-specific concern that includes general concern

@@ -1,0 +1,115 @@
+---
+description: Controller patterns for state recordables, namespacing, and routing
+globs:
+  - app/controllers/**/*.rb
+  - config/routes.rb
+---
+
+# Controller Guidelines
+
+## State Recordable Controllers
+
+Most state recordables (Published, Archived, Featured) don't need full CRUD. Ask first:
+
+1. Does it need its own page? (Usually no)
+2. What actions are needed? (Usually just create/destroy)
+3. How will it be used? (Usually inline toggle via turbo frame)
+
+### Decision Tree
+
+- **State recordable without form data** → Simple toggle (create/destroy only)
+- **State recordable with form data** (reason, notes) → Form pattern (new/create/destroy)
+- **Data recordable needing pages** → Full CRUD controller
+- **Data recordable without pages** → Nested controller with limited actions
+
+## Controller Namespacing
+
+Match controller namespace to model namespace:
+
+```
+app/
+├── models/
+│   └── article/
+│       └── published.rb          # Article::Published
+└── controllers/
+    └── articles/
+        └── publications_controller.rb  # Articles::PublicationsController
+```
+
+### Naming Convention
+
+Use natural, readable plurals for controller names:
+
+| Model | Controller | Route Resource |
+|-------|------------|----------------|
+| `Article::Published` | `Articles::PublicationsController` | `:publication` |
+| `Article::Archived` | `Articles::ArchivesController` | `:archive` |
+| `Article::Featured` | `Articles::FeaturesController` | `:feature` |
+| `Comment::Flagged` | `Comments::FlagsController` | `:flag` |
+
+## Simple Toggle Pattern
+
+```ruby
+# app/controllers/articles/publications_controller.rb
+class Articles::PublicationsController < ApplicationController
+  before_action :set_article_recording
+
+  def create
+    published = Article::Published.create!
+    @article_recording.children.create!(
+      recordable: published,
+      recorded_at: Time.current
+    )
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to @article_recording }
+    end
+  end
+
+  def destroy
+    published_recording = @article_recording.children
+      .find_by(recordable_type: 'Article::Published')
+    published_recording&.destroy
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to @article_recording }
+    end
+  end
+
+  private
+
+  def set_article_recording
+    @article_recording = Recording.find(params[:article_id])
+  end
+end
+```
+
+## Routing
+
+Use singular `resource` for state toggles with limited actions:
+
+```ruby
+# config/routes.rb
+resources :articles do
+  resource :publication, controller: 'articles/publications', only: [:create, :destroy]
+  resource :archive, controller: 'articles/archives', only: [:create, :destroy]
+end
+```
+
+This generates:
+- `POST /articles/:article_id/publication` → `#create`
+- `DELETE /articles/:article_id/publication` → `#destroy`
+- Helper: `article_publication_path(@article)`
+
+## Turbo Stream Responses
+
+State changes respond with turbo_stream to update inline UI:
+
+```erb
+<%# app/views/articles/publications/create.turbo_stream.erb %>
+<%= turbo_stream.replace "article_#{@article_recording.id}_publish_status" do %>
+  <%= render partial: "articles/publish_status", locals: { article: @article_recording } %>
+<% end %>
+```

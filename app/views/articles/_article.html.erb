@@ -1,0 +1,20 @@
+<article class="article-card">
+  <div class="article-card__layout">
+    <div class="article-card__content">
+      <h2 class="article-card__title">
+        <%= link_to recording.recordable.title, recording, class: "article-card__title-link" %>
+      </h2>
+      <% if recording.recordable.body.present? %>
+        <p class="article-card__excerpt"><%= truncate(recording.recordable.body, length: 200) %></p>
+      <% end %>
+      <p class="article-card__meta">
+        <span class="article-card__author"><%= recording.creator.person_card.name %></span>
+        <span class="article-card__timestamp"><%= time_ago_in_words(recording.created_at) %> ago</span>
+      </p>
+    </div>
+    <div class="article-card__actions">
+      <%= link_to "Edit", edit_article_path(recording), class: "btn btn--link" %>
+      <%= button_to "Delete", recording, method: :delete, class: "btn btn--link btn--link-danger", form: { data: { turbo_confirm: "Are you sure you want to delete this article?" } } %>
+    </div>
+  </div>
+</article>

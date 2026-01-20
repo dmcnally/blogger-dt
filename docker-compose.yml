@@ -13,6 +13,12 @@ services:
     environment: &environment
       DEVELOPMENT_DATABASE_URL: "postgres://postgres:@postgres:5432/blogger_development"
       TEST_DATABASE_URL: "postgres://postgres:@postgres:5432/blogger_test"
+      DEVELOPMENT_CACHE_DATABASE_URL: "postgres://postgres:@postgres:5432/blogger_cache_development"
+      TEST_CACHE_DATABASE_URL: "postgres://postgres:@postgres:5432/blogger_cache_test"
+      DEVELOPMENT_QUEUE_DATABASE_URL: "postgres://postgres:@postgres:5432/blogger_queue_development"
+      TEST_QUEUE_DATABASE_URL: "postgres://postgres:@postgres:5432/blogger_queue_test"
+      DEVELOPMENT_CABLE_DATABASE_URL: "postgres://postgres:@postgres:5432/blogger_cable_development"
+      TEST_CABLE_DATABASE_URL: "postgres://postgres:@postgres:5432/blogger_cable_test"
       DATABASE_URL: "postgres://postgres:@postgres:5432/blogger_development"
       REDIS_URL: "redis://redis:6379"
       ENCRYPT_SECRET_KEY: "QRDUGL+6BlKart8/U4o2kMiHpPgAoNrEIPX1KKVaR1c="

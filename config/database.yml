@@ -1,6 +1,38 @@
 development:
-  url: <%= ENV['DEVELOPMENT_DATABASE_URL'] %>
+  primary:
+    url: <%= ENV['DEVELOPMENT_DATABASE_URL'] %>
+  cache:
+    url: <%= ENV['DEVELOPMENT_CACHE_DATABASE_URL'] %>
+    migrations_paths: db/cache_migrate
+  queue:
+    url: <%= ENV['DEVELOPMENT_QUEUE_DATABASE_URL'] %>
+    migrations_paths: db/queue_migrate
+  cable:
+    url: <%= ENV['DEVELOPMENT_CABLE_DATABASE_URL'] %>
+    migrations_paths: db/cable_migrate
+
 test:
-  url: <%= ENV['TEST_DATABASE_URL'] %>
+  primary:
+    url: <%= ENV['TEST_DATABASE_URL'] %>
+  cache:
+    url: <%= ENV['TEST_CACHE_DATABASE_URL'] %>
+    migrations_paths: db/cache_migrate
+  queue:
+    url: <%= ENV['TEST_QUEUE_DATABASE_URL'] %>
+    migrations_paths: db/queue_migrate
+  cable:
+    url: <%= ENV['TEST_CABLE_DATABASE_URL'] %>
+    migrations_paths: db/cable_migrate
+
 production:
-  url: <%= ENV['DATABASEDEVELOPMENT_DATABASE_URL_URL'] %>
+  primary:
+    url: <%= ENV['DATABASE_URL'] %>
+  cache:
+    url: <%= ENV['CACHE_DATABASE_URL'] %>
+    migrations_paths: db/cache_migrate
+  queue:
+    url: <%= ENV['QUEUE_DATABASE_URL'] %>
+    migrations_paths: db/queue_migrate
+  cable:
+    url: <%= ENV['CABLE_DATABASE_URL'] %>
+    migrations_paths: db/cable_migrate

@@ -1,0 +1,7 @@
+<div class="page page--narrow">
+  <%= link_to "&larr; Back to Article".html_safe, @recording, class: "back-link" %>
+
+  <h1 class="page-header__title">Edit Article</h1>
+
+  <%= render "form", article: @article, recording: @recording %>
+</div>

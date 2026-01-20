@@ -1,0 +1,27 @@
+<%= form_with model: article, url: (local_assigns[:recording] ? article_path(recording) : articles_path), class: "form" do |form| %>
+  <% if article.errors.any? %>
+    <div class="form-errors">
+      <h2 class="form-errors__title"><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>
+      <ul class="form-errors__list">
+        <% article.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-field">
+    <%= form.label :title, class: "form-field__label" %>
+    <%= form.text_field :title, class: "form-field__input", placeholder: "Enter article title..." %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :body, class: "form-field__label" %>
+    <%= form.text_area :body, rows: 12, class: "form-field__input form-field__input--textarea", placeholder: "Write your article content here..." %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit class: "btn btn--primary" %>
+    <%= link_to "Cancel", (local_assigns[:recording] ? article_path(recording) : articles_path), class: "btn btn--secondary" %>
+  </div>
+<% end %>

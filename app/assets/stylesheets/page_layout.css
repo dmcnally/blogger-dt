@@ -1,0 +1,42 @@
+/* Block: page */
+.page {
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1rem;
+}
+
+.page--narrow {
+  max-width: 42rem;
+}
+
+.page--medium {
+  max-width: 48rem;
+}
+
+/* Block: page-header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.page-header__title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Block: back-link */
+.back-link {
+  display: inline-block;
+  color: #2563eb;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: #1e40af;
+}

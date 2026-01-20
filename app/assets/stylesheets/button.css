@@ -1,0 +1,58 @@
+/* Block: btn */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Modifier: primary (blue) */
+.btn--primary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn--primary:hover {
+  background-color: #1d4ed8;
+}
+
+/* Modifier: secondary (gray) */
+.btn--secondary {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.btn--secondary:hover {
+  background-color: #d1d5db;
+}
+
+/* Modifier: danger (red) */
+.btn--danger {
+  background-color: #dc2626;
+  color: white;
+}
+
+.btn--danger:hover {
+  background-color: #b91c1c;
+}
+
+/* Modifier: link (text-only button style) */
+.btn--link {
+  background: none;
+  padding: 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.btn--link:hover {
+  color: #2563eb;
+}
+
+.btn--link-danger:hover {
+  color: #dc2626;
+}
