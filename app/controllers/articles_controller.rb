@@ -1,11 +1,11 @@
 class ArticlesController < ApplicationController
-  before_action :set_recording, only: [:show, :edit, :update, :destroy]
+  before_action :set_recording, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @recordings = if params[:q].present?
-      Recording.search(params[:q], recordable_type: "Article").order(created_at: :desc)
+      Recording.kept.search(params[:q], recordable_type: "Article").order(created_at: :desc)
     else
-      Recording.articles.order(created_at: :desc)
+      Recording.kept.articles.order(created_at: :desc)
     end
   end
 
@@ -44,7 +44,7 @@ class ArticlesController < ApplicationController
   end
 
   def destroy
-    @recording.destroy!
+    @recording.discard!
     redirect_to articles_path, notice: "Article was successfully deleted.", status: :see_other
   end
 

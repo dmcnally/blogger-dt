@@ -4,7 +4,7 @@ class PublicationState < ApplicationRecord
   PUBLISHED = "published"
   NOT_PUBLISHED = "notPublished"
 
-  validates :state, presence: true, inclusion: { in: [PUBLISHED, NOT_PUBLISHED] }, uniqueness: true
+  validates :state, presence: true, inclusion: { in: [ PUBLISHED, NOT_PUBLISHED ] }, uniqueness: true
 
   def published?
     state == PUBLISHED

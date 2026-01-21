@@ -18,7 +18,7 @@ class BroadcasterTest < ActiveSupport::TestCase
 
     comment.define_singleton_method(:broadcastable?) { true }
     comment.define_singleton_method(:broadcast_on_create) do |recording|
-      Thread.current[:broadcast_calls] << [:create, recording]
+      Thread.current[:broadcast_calls] << [ :create, recording ]
     end
 
     comment_recording = @article_recording.children.create!(recordable: comment)
@@ -32,7 +32,7 @@ class BroadcasterTest < ActiveSupport::TestCase
     # Explicitly ensure broadcastable? returns false
     comment.define_singleton_method(:broadcastable?) { false }
     comment.define_singleton_method(:broadcast_on_create) do |recording|
-      Thread.current[:broadcast_calls] << [:create, recording]
+      Thread.current[:broadcast_calls] << [ :create, recording ]
     end
 
     @article_recording.children.create!(recordable: comment)
@@ -48,7 +48,7 @@ class BroadcasterTest < ActiveSupport::TestCase
 
     comment.define_singleton_method(:broadcastable?) { true }
     comment.define_singleton_method(:broadcast_on_update) do |recording|
-      Thread.current[:broadcast_calls] << [:update, recording]
+      Thread.current[:broadcast_calls] << [ :update, recording ]
     end
 
     comment_recording.touch
@@ -62,7 +62,7 @@ class BroadcasterTest < ActiveSupport::TestCase
 
     comment.define_singleton_method(:broadcastable?) { false }
     comment.define_singleton_method(:broadcast_on_update) do |recording|
-      Thread.current[:broadcast_calls] << [:update, recording]
+      Thread.current[:broadcast_calls] << [ :update, recording ]
     end
 
     comment_recording.touch
@@ -70,34 +70,34 @@ class BroadcasterTest < ActiveSupport::TestCase
     refute_includes Thread.current[:broadcast_calls].map(&:first), :update
   end
 
-  # broadcast_on_destroy
+  # broadcast_on_discard
 
-  test "calls broadcast_on_destroy after recording destroy for broadcastable recordable" do
+  test "calls broadcast_on_discard after recording discard for broadcastable recordable" do
     comment = Comment.new(body: "Test comment")
     comment_recording = @article_recording.children.create!(recordable: comment)
 
     comment.define_singleton_method(:broadcastable?) { true }
-    comment.define_singleton_method(:broadcast_on_destroy) do |recording|
-      Thread.current[:broadcast_calls] << [:destroy, recording]
+    comment.define_singleton_method(:broadcast_on_discard) do |recording|
+      Thread.current[:broadcast_calls] << [ :discard, recording ]
     end
 
-    comment_recording.destroy!
+    comment_recording.discard!
 
-    assert_includes Thread.current[:broadcast_calls].map(&:first), :destroy
+    assert_includes Thread.current[:broadcast_calls].map(&:first), :discard
   end
 
-  test "does not call broadcast_on_destroy for non-broadcastable recordable" do
+  test "does not call broadcast_on_discard for non-broadcastable recordable" do
     comment = Comment.new(body: "Test comment")
     comment_recording = @article_recording.children.create!(recordable: comment)
 
     comment.define_singleton_method(:broadcastable?) { false }
-    comment.define_singleton_method(:broadcast_on_destroy) do |recording|
-      Thread.current[:broadcast_calls] << [:destroy, recording]
+    comment.define_singleton_method(:broadcast_on_discard) do |recording|
+      Thread.current[:broadcast_calls] << [ :discard, recording ]
     end
 
-    comment_recording.destroy!
+    comment_recording.discard!
 
-    refute_includes Thread.current[:broadcast_calls].map(&:first), :destroy
+    refute_includes Thread.current[:broadcast_calls].map(&:first), :discard
   end
 
   # Broadcast method receives recording
@@ -107,7 +107,7 @@ class BroadcasterTest < ActiveSupport::TestCase
 
     comment.define_singleton_method(:broadcastable?) { true }
     comment.define_singleton_method(:broadcast_on_create) do |recording|
-      Thread.current[:broadcast_calls] << [:create, recording]
+      Thread.current[:broadcast_calls] << [ :create, recording ]
     end
 
     comment_recording = @article_recording.children.create!(recordable: comment)

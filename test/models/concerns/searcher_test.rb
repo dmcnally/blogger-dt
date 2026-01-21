@@ -92,10 +92,10 @@ class SearcherTest < ActiveSupport::TestCase
 
   # has_one association
 
-  test "search_index is destroyed when recording is destroyed" do
+  test "search_index is destroyed when recording is discarded" do
     search_index_id = @article_recording.search_index.id
 
-    @article_recording.destroy!
+    @article_recording.discard!
 
     refute SearchIndex.exists?(search_index_id)
   end

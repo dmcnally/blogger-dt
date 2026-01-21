@@ -6,6 +6,6 @@ class CreateEventDetails < ActiveRecord::Migration[8.1]
       t.text :value
     end
 
-    add_index :event_details, [:event_id, :key], unique: true
+    add_index :event_details, [ :event_id, :key ], unique: true
   end
 end

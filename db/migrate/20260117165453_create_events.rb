@@ -12,9 +12,9 @@ class CreateEvents < ActiveRecord::Migration[8.1]
       t.datetime :created_at, null: false
     end
 
-    add_index :events, [:eventable_type, :eventable_id]
-    add_index :events, [:subject_type, :subject_id]
-    add_index :events, [:subject_previous_type, :subject_previous_id],
+    add_index :events, [ :eventable_type, :eventable_id ]
+    add_index :events, [ :subject_type, :subject_id ]
+    add_index :events, [ :subject_previous_type, :subject_previous_id ],
               name: "index_events_on_subject_previous"
   end
 end

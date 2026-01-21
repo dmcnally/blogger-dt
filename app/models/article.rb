@@ -16,4 +16,8 @@ class Article < ApplicationRecord
   def taggable?
     true
   end
+
+  def before_discard(recording)
+    recording.children.kept.find_each(&:discard!)
+  end
 end

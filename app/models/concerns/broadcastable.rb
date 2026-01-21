@@ -13,7 +13,7 @@ module Broadcastable
     # Override in recordable to broadcast on update
   end
 
-  def broadcast_on_destroy(recording)
-    # Override in recordable to broadcast on destroy
+  def broadcast_on_discard(recording)
+    # Override in recordable to broadcast on discard
   end
 end

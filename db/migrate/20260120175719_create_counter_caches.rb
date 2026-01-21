@@ -6,7 +6,7 @@ class CreateCounterCaches < ActiveRecord::Migration[8.1]
       t.integer :count, null: false, default: 0
     end
     add_index :counter_caches,
-              [:counterable_type, :counterable_id, :name],
+              [ :counterable_type, :counterable_id, :name ],
               unique: true,
               name: "index_counter_caches_uniqueness"
   end

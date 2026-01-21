@@ -4,7 +4,7 @@ module Counter
   included do
     has_many :counter_caches, as: :counterable, dependent: :destroy, class_name: "CounterCache"
     after_create :increment_parent_counter
-    after_destroy :decrement_parent_counter
+    after_discard :decrement_parent_counter
   end
 
   def counter(name)

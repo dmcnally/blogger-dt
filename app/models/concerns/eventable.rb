@@ -2,7 +2,7 @@ module Eventable
   extend ActiveSupport::Concern
 
   included do
-    has_many :events, as: :eventable, dependent: :destroy
+    has_many :events, as: :eventable, dependent: :restrict_with_exception
 
     after_create :track_created
     after_update :track_updated, if: :subject_changed?
@@ -28,6 +28,14 @@ module Eventable
       subject_previous_type: previous_subject_type,
       subject_previous_id: previous_subject_id,
       action: action_for_update,
+      person_id: current_person_id
+    )
+  end
+
+  def track_discarded
+    events.create!(
+      subject: current_subject,
+      action: "discarded",
       person_id: current_person_id
     )
   end

@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_parent_recording
-  before_action :set_comment_recording, only: [:destroy]
+  before_action :set_comment_recording, only: [ :destroy ]
 
   def create
     @comment_recording = @parent_recording.children.build(
@@ -21,7 +21,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment_recording.destroy!
+    @comment_recording.discard!
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to @parent_recording, notice: "Comment was successfully deleted.", status: :see_other }

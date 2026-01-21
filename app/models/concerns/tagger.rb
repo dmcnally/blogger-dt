@@ -3,7 +3,7 @@ module Tagger
 
   def tag_recordings
     return self.class.none unless recordable.taggable?
-    children.where(recordable_type: "Tag")
+    children.kept.where(recordable_type: "Tag")
   end
 
   def tags
@@ -26,7 +26,7 @@ module Tagger
     return unless recordable.taggable?
     tag = Tag.find_by(name: name.to_s.strip.downcase)
     return unless tag
-    tag_recordings.find_by(recordable: tag)&.destroy!
+    tag_recordings.find_by(recordable: tag)&.discard!
   end
 
   def tagged?(name)

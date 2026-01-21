@@ -12,8 +12,8 @@ Rails.application.routes.draw do
   resources :articles
 
   resources :recordings, only: [] do
-    resources :comments, only: [:create, :destroy]
-    resource :publication, only: [:create, :destroy]
+    resources :comments, only: [ :create, :destroy ]
+    resource :publication, only: [ :create, :destroy ]
   end
 
   root "articles#index"

@@ -7,6 +7,6 @@ class CreateRecordings < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :recordings, [:recordable_type, :recordable_id]
+    add_index :recordings, [ :recordable_type, :recordable_id ]
   end
 end

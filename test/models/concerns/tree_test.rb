@@ -53,7 +53,7 @@ class TreeTest < ActiveSupport::TestCase
     comment = Comment.new(body: "Test comment")
     child_recording = @root_recording.children.create!(recordable: comment)
 
-    assert_equal [@root_recording], child_recording.ancestors
+    assert_equal [ @root_recording ], child_recording.ancestors
   end
 
   test "ancestors returns full chain for deeply nested recording" do
@@ -63,7 +63,7 @@ class TreeTest < ActiveSupport::TestCase
     comment2 = Comment.new(body: "Second comment")
     child2 = child1.children.create!(recordable: comment2)
 
-    assert_equal [child1, @root_recording], child2.ancestors
+    assert_equal [ child1, @root_recording ], child2.ancestors
   end
 
   # descendants

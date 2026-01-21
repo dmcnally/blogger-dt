@@ -8,6 +8,6 @@ module Article::Searchable
   end
 
   def searchable_content
-    [title, body].compact.join(" ")
+    [ title, body ].compact.join(" ")
   end
 end

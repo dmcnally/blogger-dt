@@ -1,4 +1,5 @@
 class Recording < ApplicationRecord
+  include Discardable
   include Counter
   include Eventable
   include Tree

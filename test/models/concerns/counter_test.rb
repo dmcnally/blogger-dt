@@ -72,11 +72,11 @@ class CounterTest < ActiveSupport::TestCase
     assert_equal 1, @article_recording.counter(:comments)
   end
 
-  test "counter is decremented when comment recording is destroyed" do
+  test "counter is decremented when comment recording is discarded" do
     comment_recording = @article_recording.children.create!(recordable: Comment.new(body: "Comment to delete"))
     assert_equal 1, @article_recording.counter(:comments)
 
-    comment_recording.destroy!
+    comment_recording.discard!
     assert_equal 0, @article_recording.counter(:comments)
   end
 

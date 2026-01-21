@@ -3,7 +3,11 @@ module Tree
 
   included do
     belongs_to :parent, class_name: name, optional: true
-    has_many :children, class_name: name, foreign_key: :parent_id, dependent: :destroy
+    has_many :children, class_name: name, foreign_key: :parent_id, dependent: :restrict_with_exception
+  end
+
+  def kept_children
+    children.kept
   end
 
   def root?
@@ -16,10 +20,10 @@ module Tree
 
   def ancestors
     return [] if root?
-    [parent] + parent.ancestors
+    [ parent ] + parent.ancestors
   end
 
   def descendants
-    children.flat_map { |child| [child] + child.descendants }
+    children.flat_map { |child| [ child ] + child.descendants }
   end
 end

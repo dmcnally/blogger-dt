@@ -4,6 +4,7 @@ module Searcher
   included do
     has_one :search_index, dependent: :destroy
     after_save :update_search_index, if: :should_update_search_index?
+    after_discard :destroy_search_index
   end
 
   class_methods do
@@ -27,5 +28,9 @@ module Searcher
       recordable_type: recordable_type,
       content: recordable.searchable_content
     )
+  end
+
+  def destroy_search_index
+    search_index&.destroy
   end
 end

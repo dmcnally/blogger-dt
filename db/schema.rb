@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_20_230626) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -75,10 +75,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_20_230626) do
 
   create_table "recordings", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.datetime "discarded_at"
     t.bigint "parent_id"
     t.bigint "recordable_id", null: false
     t.string "recordable_type", null: false
     t.datetime "updated_at", null: false
+    t.index ["discarded_at"], name: "index_recordings_on_discarded_at"
     t.index ["parent_id"], name: "index_recordings_on_parent_id"
     t.index ["recordable_type", "recordable_id"], name: "index_recordings_on_recordable_type_and_recordable_id"
   end
