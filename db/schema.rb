@@ -19,6 +19,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
     t.string "title", null: false
   end
 
+  create_table "buckets", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
   end
@@ -42,14 +48,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
 
   create_table "events", force: :cascade do |t|
     t.string "action", null: false
+    t.bigint "bucket_id", null: false
     t.datetime "created_at", null: false
     t.bigint "eventable_id", null: false
     t.string "eventable_type", null: false
-    t.bigint "person_id", null: false
+    t.bigint "person_id"
     t.bigint "subject_id", null: false
     t.bigint "subject_previous_id"
     t.string "subject_previous_type"
     t.string "subject_type", null: false
+    t.index ["bucket_id"], name: "index_events_on_bucket_id"
     t.index ["eventable_type", "eventable_id"], name: "index_events_on_eventable_type_and_eventable_id"
     t.index ["person_id"], name: "index_events_on_person_id"
     t.index ["subject_previous_type", "subject_previous_id"], name: "index_events_on_subject_previous"
@@ -74,12 +82,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
   end
 
   create_table "recordings", force: :cascade do |t|
+    t.bigint "bucket_id", null: false
     t.datetime "created_at", null: false
     t.datetime "discarded_at"
     t.bigint "parent_id"
     t.bigint "recordable_id", null: false
     t.string "recordable_type", null: false
     t.datetime "updated_at", null: false
+    t.index ["bucket_id"], name: "index_recordings_on_bucket_id"
     t.index ["discarded_at"], name: "index_recordings_on_discarded_at"
     t.index ["parent_id"], name: "index_recordings_on_parent_id"
     t.index ["recordable_type", "recordable_id"], name: "index_recordings_on_recordable_type_and_recordable_id"
@@ -109,8 +119,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
   end
 
   add_foreign_key "event_details", "events"
+  add_foreign_key "events", "buckets"
   add_foreign_key "events", "people"
   add_foreign_key "people", "recordings"
+  add_foreign_key "recordings", "buckets"
   add_foreign_key "recordings", "recordings", column: "parent_id"
   add_foreign_key "search_indices", "recordings"
   add_foreign_key "tag_states", "tags"

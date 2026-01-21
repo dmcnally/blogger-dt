@@ -1,8 +1,10 @@
 class Event < ApplicationRecord
+  include Bucketable
+
   belongs_to :eventable, polymorphic: true
   belongs_to :subject, polymorphic: true
   belongs_to :subject_previous, polymorphic: true, optional: true
-  belongs_to :person
+  belongs_to :person, optional: true
 
   has_many :details, class_name: "Event::Detail", dependent: :destroy
 

@@ -1,4 +1,5 @@
 class Recording < ApplicationRecord
+  include Bucketable
   include Discardable
   include Counter
   include Eventable

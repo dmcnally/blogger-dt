@@ -1,6 +1,7 @@
 class CreateEvents < ActiveRecord::Migration[8.1]
   def change
     create_table :events do |t|
+      t.references :bucket, null: false, foreign_key: true
       t.string :eventable_type, null: false
       t.bigint :eventable_id, null: false
       t.string :subject_type, null: false

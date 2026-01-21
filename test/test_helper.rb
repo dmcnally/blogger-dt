@@ -13,12 +13,11 @@ module ActiveSupport
     # Add more helper methods to be used by all tests here...
 
     setup do
-      # Bootstrap a test person - skip event tracking for the initial person creation
-      Recording.skip_callback(:create, :after, :track_created)
+      # Bootstrap bucket and person for tests
+      Current.bucket = Bucket.find_or_create_by!(name: "Test")
       person_card = PersonCard.create!(first_name: "Test", last_name: "User")
       recording = Recording.create!(recordable: person_card)
       Current.person = Person.create!(recording: recording)
-      Recording.set_callback(:create, :after, :track_created)
     end
 
     teardown do

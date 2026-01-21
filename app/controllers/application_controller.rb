@@ -12,5 +12,6 @@ class ApplicationController < ActionController::Base
   def set_current_person
     # TODO: Replace with current_user.person when authentication is added
     Current.person = Person.first
+    Current.bucket = Bucket.first
   end
 end

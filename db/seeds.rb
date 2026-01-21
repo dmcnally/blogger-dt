@@ -8,6 +8,9 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+# Default Bucket (must come first - recordings and events depend on it)
+Current.bucket = Bucket.find_or_create_by!(name: "Default")
+
 # PublicationState singletons
 PublicationState.published
 PublicationState.not_published
