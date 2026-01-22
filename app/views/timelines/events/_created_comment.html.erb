@@ -1,0 +1,16 @@
+<li class="timeline__entry">
+  <span class="timeline__action timeline__action--created">
+    Commented
+  </span>
+  <blockquote class="timeline__quote">
+    <%= truncate(event.subject.body, length: 100) %>
+  </blockquote>
+  <% if event.person&.person_card %>
+    <span class="timeline__actor">
+      by <%= event.person.person_card.name %>
+    </span>
+  <% end %>
+  <time class="timeline__time" datetime="<%= event.created_at.iso8601 %>">
+    <%= time_ago_in_words(event.created_at) %> ago
+  </time>
+</li>

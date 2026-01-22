@@ -1,10 +1,6 @@
 /* Block: timeline */
 .timeline {
   margin-top: 2.5rem;
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
 }
 
 .timeline__title {
@@ -54,6 +50,17 @@
 
 .timeline__subject {
   color: #374151;
+}
+
+.timeline__quote {
+  flex-basis: 100%;
+  margin: 0.5rem 0 0 0;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid #d1d5db;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-style: italic;
+  font-size: 0.875rem;
 }
 
 .timeline__actor {

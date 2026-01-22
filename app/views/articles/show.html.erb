@@ -37,17 +37,7 @@
 
   <%# Comments Section %>
   <% if @recording.recordable.commentable? %>
-    <section class="comments-section">
-      <%= turbo_stream_from @recording, "comments" %>
-      <h2 class="comments-section__title">Comments (<%= render CounterCache.for(@recording, "comments") %>)</h2>
-
-      <div id="comments" class="comments-section__list">
-        <% @recording.comments.each do |comment_recording| %>
-          <%= render partial: "comments/comment", locals: { comment_recording: comment_recording } %>
-        <% end %>
-      </div>
-
-      <%= render "comments/form", parent_recording: @recording, comment: Comment.new %>
-    </section>
+    <%= render "comments/section", recording: @recording %>
+    <%= render "comments/form", parent_recording: @recording, comment: Comment.new %>
   <% end %>
 </div>
