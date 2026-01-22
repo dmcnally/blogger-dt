@@ -37,7 +37,6 @@
 
   <%# Comments Section %>
   <% if @recording.recordable.commentable? %>
-    <%= render "comments/section", recording: @recording %>
     <%= render "comments/form", parent_recording: @recording, comment: Comment.new %>
   <% end %>
 </div>
