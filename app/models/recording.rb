@@ -9,9 +9,8 @@ class Recording < ApplicationRecord
   include Publisher
   include Broadcaster
   include Searcher
-  include Tagger
 
-  RECORDABLE_TYPES = %w[Article Comment PersonCard Tag].freeze
+  RECORDABLE_TYPES = %w[Article Comment PersonCard].freeze
 
   has_one :publication, dependent: :destroy
 
