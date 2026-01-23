@@ -1,11 +1,5 @@
-<li class="timeline__entry">
-  <span class="timeline__header">
-    <%= event.person&.person_card&.name || "Someone" %> commented...
-  </span>
-  <time class="timeline__time" datetime="<%= event.created_at.iso8601 %>">
-    <%= time_ago_in_words(event.created_at) %> ago
-  </time>
+<%= render "timelines/events/wrapper", event: event do %>
   <p class="timeline__comment">
     <%= truncate(event.subject.body, length: 100) %>
   </p>
-</li>
+<% end %>
