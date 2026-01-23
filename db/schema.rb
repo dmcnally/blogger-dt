@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_23_074826) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_23_084303) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -107,16 +107,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_23_074826) do
     t.index ["searchable"], name: "index_search_indices_on_searchable", using: :gin
   end
 
-  create_table "tag_states", force: :cascade do |t|
-    t.boolean "available", default: true, null: false
-    t.datetime "created_at", null: false
-    t.bigint "tag_id", null: false
-    t.datetime "updated_at", null: false
-    t.index ["tag_id"], name: "index_tag_states_on_tag_id", unique: true
-  end
-
   create_table "tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "name", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
@@ -128,5 +122,4 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_23_074826) do
   add_foreign_key "recordings", "buckets"
   add_foreign_key "recordings", "recordings", column: "parent_id"
   add_foreign_key "search_indices", "recordings"
-  add_foreign_key "tag_states", "tags"
 end

@@ -51,5 +51,4 @@ class DescribableTest < ActiveSupport::TestCase
     # Comment event should still show the original title
     assert_equal "comment on My Article Title", comment.timeline_description(comment_event)
   end
-
 end
