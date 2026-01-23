@@ -33,14 +33,14 @@ class TreeTest < ActiveSupport::TestCase
   end
 
   test "root traverses multiple levels to find root" do
-    @root_recording.publish!
-    publication_recording = @root_recording.publication_recording
-
     comment = Comment.new(body: "Test comment")
     comment_recording = @root_recording.children.create!(recordable: comment)
 
-    assert_equal @root_recording, publication_recording.root
+    reply = Comment.new(body: "Reply comment")
+    reply_recording = comment_recording.children.create!(recordable: reply)
+
     assert_equal @root_recording, comment_recording.root
+    assert_equal @root_recording, reply_recording.root
   end
 
   # ancestors

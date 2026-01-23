@@ -21,10 +21,11 @@ class SearcherTest < ActiveSupport::TestCase
   end
 
   test "does not create search_index for non-searchable recordables" do
-    publication_state = PublicationState.published
-    publication_recording = @article_recording.children.create!(recordable: publication_state)
+    Tag.named("ruby")
+    @article_recording.tag!("ruby")
+    tag_recording = @article_recording.tag_recordings.first
 
-    assert_nil publication_recording.search_index
+    assert_nil tag_recording.search_index
   end
 
   # search_index updates

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_23_074826) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -76,9 +76,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
     t.string "last_name"
   end
 
-  create_table "publication_states", force: :cascade do |t|
-    t.string "state", null: false
-    t.index ["state"], name: "index_publication_states_on_state", unique: true
+  create_table "publications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "recording_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recording_id"], name: "index_publications_on_recording_id", unique: true
   end
 
   create_table "recordings", force: :cascade do |t|
@@ -122,6 +124,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
   add_foreign_key "events", "buckets"
   add_foreign_key "events", "people"
   add_foreign_key "people", "recordings"
+  add_foreign_key "publications", "recordings"
   add_foreign_key "recordings", "buckets"
   add_foreign_key "recordings", "recordings", column: "parent_id"
   add_foreign_key "search_indices", "recordings"

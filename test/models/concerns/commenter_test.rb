@@ -38,8 +38,9 @@ class CommenterTest < ActiveSupport::TestCase
     comment = Comment.new(body: "Test comment")
     comment_recording = @article_recording.children.create!(recordable: comment)
 
-    # Also add a publication state as a child
-    @article_recording.publish!
+    # Also add a tag as a child
+    Tag.named("ruby")
+    @article_recording.tag!("ruby")
 
     comments = @article_recording.comments
 

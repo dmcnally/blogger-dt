@@ -11,10 +11,6 @@
 # Default Bucket (must come first - recordings and events depend on it)
 Current.bucket = Bucket.find_or_create_by!(name: "Default")
 
-# PublicationState singletons
-PublicationState.published
-PublicationState.not_published
-
 # Default Person (until authentication is implemented)
 if Person.none?
   person_card = PersonCard.create!(first_name: "David", last_name: "McNally")

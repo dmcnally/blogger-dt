@@ -81,11 +81,12 @@ class CounterTest < ActiveSupport::TestCase
   end
 
   test "counter is not affected by non-countable child recordings" do
-    # Publication state is not countable
-    @article_recording.publish!
+    # Tags are not countable
+    Tag.named("ruby")
+    @article_recording.tag!("ruby")
 
     assert_equal 0, @article_recording.counter(:comments)
-    assert_equal 0, @article_recording.counter(:publication_states)
+    assert_equal 0, @article_recording.counter(:tags)
   end
 
   test "counter update failure rolls back comment creation" do

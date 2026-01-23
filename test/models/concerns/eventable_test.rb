@@ -80,31 +80,30 @@ class EventableTest < ActiveSupport::TestCase
     assert_equal initial_event_count, @recording.events.count
   end
 
-  # Custom Action Support
+  # Publisher Integration
 
-  test "event uses event_action from subject when subject responds to it" do
-    # PublicationState defines event_action
-    publication_state = PublicationState.published
-    publication_recording = @recording.children.create!(recordable: publication_state)
-    event = publication_recording.events.last
+  test "publish! creates event with published action on recording" do
+    @recording.publish!
+    event = @recording.events.find_by(action: "published")
 
-    assert_equal "published", event.action
+    assert event.present?
+    assert_equal @article, event.subject
   end
 
-  test "event uses custom action when publication state changes to unpublished" do
-    publication_state = PublicationState.not_published
-    publication_recording = @recording.children.create!(recordable: publication_state)
-    event = publication_recording.events.last
+  test "unpublish! creates event with unpublished action on recording" do
+    @recording.publish!
+    @recording.unpublish!
+    event = @recording.events.find_by(action: "unpublished")
 
-    assert_equal "unpublished", event.action
+    assert event.present?
+    assert_equal @article, event.subject
   end
 
-  test "toggling publication state creates events with custom actions" do
+  test "toggling publication creates events with correct actions" do
     @recording.publish!
     @recording.unpublish!
 
-    publication_recording = @recording.publication_recording
-    actions = publication_recording.events.order(:created_at).pluck(:action)
+    actions = @recording.events.where(action: %w[published unpublished]).order(:created_at).pluck(:action)
 
     assert_equal %w[published unpublished], actions
   end

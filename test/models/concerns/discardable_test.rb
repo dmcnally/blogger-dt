@@ -93,14 +93,10 @@ class DiscardableTest < ActiveSupport::TestCase
     @recording.tag!("ruby")
     tag_recording = @recording.tag_recordings.first
 
-    @recording.publish!
-    publication_recording = @recording.publication_recording
-
     @recording.discard!
 
     assert comment_recording.reload.discarded?
     assert tag_recording.reload.discarded?
-    assert publication_recording.reload.discarded?
   end
 
   test "discarding comment discards child comments" do
