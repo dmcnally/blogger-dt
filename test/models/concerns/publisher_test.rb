@@ -85,4 +85,38 @@ class PublisherTest < ActiveSupport::TestCase
 
     assert_equal @recording, @recording.publication.recording
   end
+
+  test "published scope returns only published recordings" do
+    another_article = Article.new(title: "Another Article", body: "Another body")
+    another_recording = Recording.create!(recordable: another_article)
+
+    @recording.publish!
+
+    published_recordings = Recording.published
+
+    assert_includes published_recordings, @recording
+    refute_includes published_recordings, another_recording
+  end
+
+  test "published scope returns empty when none are published" do
+    assert_empty Recording.published
+  end
+
+  test "unpublished scope returns only unpublished recordings" do
+    another_article = Article.new(title: "Another Article", body: "Another body")
+    another_recording = Recording.create!(recordable: another_article)
+
+    @recording.publish!
+
+    unpublished_recordings = Recording.unpublished
+
+    refute_includes unpublished_recordings, @recording
+    assert_includes unpublished_recordings, another_recording
+  end
+
+  test "unpublished scope excludes published recordings" do
+    @recording.publish!
+
+    refute_includes Recording.unpublished, @recording
+  end
 end

@@ -1,6 +1,14 @@
 module Publisher
   extend ActiveSupport::Concern
 
+
+  included do
+    has_one :publication, dependent: :destroy
+
+    scope :published, -> { joins(:publication) }
+    scope :unpublished, -> { left_joins(:publication).where.missing(:publication) }
+  end
+
   def published?
     publication.present?
   end
