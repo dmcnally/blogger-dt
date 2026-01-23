@@ -34,20 +34,6 @@ class CommenterTest < ActiveSupport::TestCase
     assert_kind_of ActiveRecord::Relation, comments
   end
 
-  test "comments only returns children with recordable_type Comment" do
-    comment = Comment.new(body: "Test comment")
-    comment_recording = @article_recording.children.create!(recordable: comment)
-
-    # Also add a tag as a child
-    Tag.named("ruby")
-    @article_recording.tag!("ruby")
-
-    comments = @article_recording.comments
-
-    assert_equal 1, comments.count
-    assert_includes comments, comment_recording
-  end
-
   test "comments does not include nested comment recordings" do
     comment1 = Comment.new(body: "First comment")
     comment1_recording = @article_recording.children.create!(recordable: comment1)

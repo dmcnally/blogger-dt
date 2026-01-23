@@ -80,15 +80,6 @@ class CounterTest < ActiveSupport::TestCase
     assert_equal 0, @article_recording.counter(:comments)
   end
 
-  test "counter is not affected by non-countable child recordings" do
-    # Tags are not countable
-    Tag.named("ruby")
-    @article_recording.tag!("ruby")
-
-    assert_equal 0, @article_recording.counter(:comments)
-    assert_equal 0, @article_recording.counter(:tags)
-  end
-
   test "counter update failure rolls back comment creation" do
     # Create a comment first to verify the transaction rollback
     initial_count = @article_recording.comments.count

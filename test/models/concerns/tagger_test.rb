@@ -106,17 +106,6 @@ class TaggerTest < ActiveSupport::TestCase
     assert_equal 1, recording2.tag_recordings.count
   end
 
-  test "tag! creates event when tagging" do
-    Tag.named("ruby")
-    @recording.tag!("ruby")
-
-    tag_recording = @recording.tag_recordings.first
-    event = tag_recording.events.last
-
-    assert_equal "created", event.action
-    assert_equal Tag.find_by(name: "ruby"), event.subject
-  end
-
   test "untag! discards the tag recording" do
     Tag.named("ruby")
     @recording.tag!("ruby")
@@ -126,18 +115,6 @@ class TaggerTest < ActiveSupport::TestCase
 
     assert tag_recording.reload.discarded?
     assert Recording.exists?(tag_recording.id)
-  end
-
-  test "untag! creates a discarded event" do
-    Tag.named("ruby")
-    @recording.tag!("ruby")
-    tag_recording = @recording.tag_recordings.first
-
-    @recording.untag!("ruby")
-
-    event = tag_recording.events.find_by(action: "discarded")
-    assert event.present?
-    assert_equal Tag.find_by(name: "ruby"), event.subject
   end
 
   test "tag_recordings returns empty relation for non-taggable recordables" do

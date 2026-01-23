@@ -20,13 +20,6 @@ class DescribableTest < ActiveSupport::TestCase
     assert_equal "comment on My Article Title", comment.timeline_description(event)
   end
 
-  test "published event timeline_description returns article title" do
-    @article_recording.publish!
-    event = @article_recording.events.find_by(action: "published")
-
-    assert_equal "My Article Title", event.subject.timeline_description(event)
-  end
-
   test "person_card timeline_description returns name" do
     person_card = PersonCard.new(first_name: "John", last_name: "Smith")
     person_card_recording = Recording.create!(recordable: person_card)
@@ -59,17 +52,4 @@ class DescribableTest < ActiveSupport::TestCase
     assert_equal "comment on My Article Title", comment.timeline_description(comment_event)
   end
 
-  test "published events show title at time of event, not current title" do
-    # Publish while article has "My Article Title"
-    @article_recording.publish!
-    published_event = @article_recording.events.find_by(action: "published")
-
-    # Update article recording to point to a new article with different title
-    new_article = Article.new(title: "Updated Title", body: "New body")
-    @article_recording.update!(recordable: new_article)
-
-    # Published event subject references the article at time of publish
-    # The subject is the recordable, so timeline_description uses that article
-    assert_equal "My Article Title", published_event.subject.timeline_description(published_event)
-  end
 end

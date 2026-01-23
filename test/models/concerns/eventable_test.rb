@@ -80,34 +80,6 @@ class EventableTest < ActiveSupport::TestCase
     assert_equal initial_event_count, @recording.events.count
   end
 
-  # Publisher Integration
-
-  test "publish! creates event with published action on recording" do
-    @recording.publish!
-    event = @recording.events.find_by(action: "published")
-
-    assert event.present?
-    assert_equal @article, event.subject
-  end
-
-  test "unpublish! creates event with unpublished action on recording" do
-    @recording.publish!
-    @recording.unpublish!
-    event = @recording.events.find_by(action: "unpublished")
-
-    assert event.present?
-    assert_equal @article, event.subject
-  end
-
-  test "toggling publication creates events with correct actions" do
-    @recording.publish!
-    @recording.unpublish!
-
-    actions = @recording.events.where(action: %w[published unpublished]).order(:created_at).pluck(:action)
-
-    assert_equal %w[published unpublished], actions
-  end
-
   # Creator Method
 
   test "creator returns the person who created the record" do

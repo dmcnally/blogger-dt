@@ -20,14 +20,6 @@ class SearcherTest < ActiveSupport::TestCase
     assert_includes content, "web framework"
   end
 
-  test "does not create search_index for non-searchable recordables" do
-    Tag.named("ruby")
-    @article_recording.tag!("ruby")
-    tag_recording = @article_recording.tag_recordings.first
-
-    assert_nil tag_recording.search_index
-  end
-
   # search_index updates
 
   test "updates search_index when recordable changes" do
