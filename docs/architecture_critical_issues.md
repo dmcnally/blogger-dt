@@ -1,9 +1,9 @@
 # Critical Architecture Issues
 
 **Generated:** January 24, 2026  
-**Priority:** Top 5 Most Critical Issues
+**Priority:** Top 4 Most Critical Issues
 
-This document contains the 5 most critical architectural issues identified in the application. These issues were selected based on:
+This document contains the most critical architectural issues identified in the application. These issues were selected based on:
 - Impact on application correctness
 - Risk of runtime errors
 - Violation of documented architecture guidelines
@@ -11,51 +11,7 @@ This document contains the 5 most critical architectural issues identified in th
 
 ---
 
-## Issue 1: Duplicate `has_one :publication` Declaration
-
-**ID:** ISSUE-001  
-**Severity:** Critical  
-**Category:** Model Layer
-
-### Description
-
-The `has_one :publication` association is declared in two places:
-
-**Recording model** (`app/models/recording.rb` line 16):
-```ruby
-has_one :publication, dependent: :destroy
-```
-
-**Publisher concern** (`app/models/concerns/publisher.rb` line 6):
-```ruby
-has_one :publication, dependent: :destroy
-```
-
-Since `Recording` includes `Publisher` (line 9), the association is defined twice on the same model.
-
-### Impact
-
-- Rails may register duplicate callbacks for the association
-- Association behavior may be unpredictable
-- The `dependent: :destroy` callback could potentially fire twice
-- Maintenance confusion about the source of truth
-
-### Affected Files
-
-- `app/models/recording.rb`
-- `app/models/concerns/publisher.rb`
-
-### Recommended Fix
-
-Remove line 16 from `app/models/recording.rb`:
-```ruby
-# Remove this line - already defined in Publisher concern
-has_one :publication, dependent: :destroy
-```
-
----
-
-## Issue 2: Missing Authorization Enforcement in Controllers
+## Issue 1: Missing Authorization Enforcement in Controllers
 
 **ID:** ISSUE-004  
 **Severity:** Critical  
@@ -134,7 +90,7 @@ end
 
 ---
 
-## Issue 3: Redundant Concern Includes in Recordable Models
+## Issue 2: Redundant Concern Includes in Recordable Models
 
 **ID:** ISSUE-002  
 **Severity:** High  
@@ -217,7 +173,7 @@ end
 
 ---
 
-## Issue 4: Child Recordings Don't Inherit Bucket from Parent
+## Issue 3: Child Recordings Don't Inherit Bucket from Parent
 
 **ID:** ISSUE-006  
 **Severity:** High  
@@ -287,7 +243,7 @@ end
 
 ---
 
-## Issue 5: Broadcast Method Name Mismatch
+## Issue 4: Broadcast Method Name Mismatch
 
 **ID:** ISSUE-003  
 **Severity:** High  
@@ -367,10 +323,17 @@ end
 
 | Priority | Issue | Severity | Type |
 |----------|-------|----------|------|
-| 1 | Duplicate `has_one :publication` | Critical | Bug |
-| 2 | Missing authorization enforcement | Critical | Security |
-| 3 | Redundant concern includes | High | Design |
-| 4 | Child bucket inheritance | High | Data Integrity |
-| 5 | Broadcast method mismatch | High | Bug |
+| 1 | Missing authorization enforcement | Critical | Security |
+| 2 | Redundant concern includes | High | Design |
+| 3 | Child bucket inheritance | High | Data Integrity |
+| 4 | Broadcast method mismatch | High | Bug |
 
-All five issues require immediate attention. Issues 1, 2, and 5 are bugs that affect runtime behavior. Issues 3 and 4 are design problems that could lead to subtle bugs.
+All four issues require immediate attention. Issue 1 is a security vulnerability. Issue 4 is a bug that affects runtime behavior. Issues 2 and 3 are design problems that could lead to subtle bugs.
+
+---
+
+## Invalidated Issues
+
+The following issue was previously listed but has been validated as non-existent:
+
+- **~~Duplicate `has_one :publication`~~** - The duplicate declaration does not exist in the codebase. See `docs/validation/invalid/issue_1_duplicate_publication.md` for details.
