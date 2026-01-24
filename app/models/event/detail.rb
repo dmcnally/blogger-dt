@@ -1,4 +1,6 @@
 class Event::Detail < ApplicationRecord
+  include Immutable
+
   self.table_name = "event_details"
 
   belongs_to :event

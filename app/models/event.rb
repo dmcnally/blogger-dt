@@ -1,5 +1,6 @@
 class Event < ApplicationRecord
   include Bucketable
+  include Immutable
 
   belongs_to :eventable, polymorphic: true, touch: true
   belongs_to :subject, polymorphic: true
