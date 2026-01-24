@@ -9,6 +9,7 @@ class Recording < ApplicationRecord
   include Publisher
   include Broadcaster
   include Searcher
+  include Permissible
 
   RECORDABLE_TYPES = %w[Article Comment PersonCard].freeze
 
