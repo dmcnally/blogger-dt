@@ -116,10 +116,15 @@ def seed_star_trek_articles
     }
   ]
 
+  created_count = 0
+
   articles_data.each do |data|
-    article = Article.create!(title: data[:title], body: data[:body].strip)
-    Recording.create!(recordable: article)
+    article = Article.find_or_create_by!(title: data[:title]) do |a|
+      a.body = data[:body].strip
+    end
+    Recording.find_or_create_by!(recordable: article)
+    created_count += 1 if article.previously_new_record?
   end
 
-  puts "Created #{articles_data.size} Star Trek articles"
+  puts "Created #{created_count} new Star Trek articles (#{articles_data.size - created_count} already existed)"
 end

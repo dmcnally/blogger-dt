@@ -12,14 +12,11 @@
 Current.bucket = Bucket.find_or_create_by!(name: "Default")
 
 # Default Person
-if Person.none?
-  person_card = PersonCard.create!(first_name: "David", last_name: "McNally")
-  recording = Recording.create!(recordable: person_card)
-  Person.create!(recording: recording)
-end
+person_card = PersonCard.find_or_create_by!(first_name: "David", last_name: "McNally")
+recording = Recording.find_or_create_by!(recordable: person_card)
+person = Person.find_or_create_by!(recording: recording)
 
 # Default User
-person = Person.first
 User.find_or_create_by!(email_address: "dave@makoo.com") do |user|
   user.password = "testing"
   user.person = person

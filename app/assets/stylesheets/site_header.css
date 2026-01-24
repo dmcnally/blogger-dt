@@ -54,9 +54,8 @@
 }
 
 .site-header__link--logout {
-  background-color: #374151;
-}
-
-.site-header__link--logout:hover {
-  background-color: #4b5563;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
 }
