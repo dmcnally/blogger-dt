@@ -13,8 +13,6 @@ class Recording < ApplicationRecord
 
   RECORDABLE_TYPES = %w[Article Comment PersonCard].freeze
 
-  has_one :publication, dependent: :destroy
-
   delegated_type :recordable, types: RECORDABLE_TYPES, autosave: true
 
   validates_associated :recordable
