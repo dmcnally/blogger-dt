@@ -1,13 +1,3 @@
-require:
-  - ./lib/rubocop/cop/blogger/tag_with_name
-
-Blogger/TagWithName:
-  Enabled: true
-  Exclude:
-    - "app/models/tag.rb"
-    - "test/models/tag_test.rb"
-    - "db/**/*"
-    
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
