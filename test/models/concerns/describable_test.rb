@@ -20,14 +20,6 @@ class DescribableTest < ActiveSupport::TestCase
     assert_equal "comment on My Article Title", comment.timeline_description(event)
   end
 
-  test "publication_state timeline_description delegates to parent" do
-    @article_recording.publish!
-    publication_recording = @article_recording.publication_recording
-    event = publication_recording.events.last
-
-    assert_equal "My Article Title", event.subject.timeline_description(event)
-  end
-
   test "person_card timeline_description returns name" do
     person_card = PersonCard.new(first_name: "John", last_name: "Smith")
     person_card_recording = Recording.create!(recordable: person_card)
@@ -58,19 +50,5 @@ class DescribableTest < ActiveSupport::TestCase
 
     # Comment event should still show the original title
     assert_equal "comment on My Article Title", comment.timeline_description(comment_event)
-  end
-
-  test "publication events show parent title at time of event, not current title" do
-    # Publish while article has "My Article Title"
-    @article_recording.publish!
-    publication_recording = @article_recording.publication_recording
-    publication_event = publication_recording.events.last
-
-    # Update article recording to point to a new article with different title
-    new_article = Article.new(title: "Updated Title", body: "New body")
-    @article_recording.update!(recordable: new_article)
-
-    # Publication event should still show the original title
-    assert_equal "My Article Title", publication_event.subject.timeline_description(publication_event)
   end
 end

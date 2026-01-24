@@ -1,13 +1,13 @@
-<section class="timeline">
-  <h3 class="timeline__title">Timeline</h3>
-
-  <% if recording.timeline_events.any? %>
-    <ul id="<%= dom_id(recording, :timeline_events) %>" class="timeline__list">
-      <% recording.timeline_events.each do |event| %>
-        <%= render "timelines/event", event: event %>
-      <% end %>
-    </ul>
-  <% else %>
-    <p class="timeline__empty">No events recorded yet.</p>
-  <% end %>
-</section>
+<%= cache recording do %>
+  <section class="timeline">
+    <% if recording.timeline_events.any? %>
+      <ul id="<%= dom_id(recording, :timeline_events) %>" class="timeline__list">
+        <% recording.timeline_events.each do |event| %>
+          <%= render event_partial_path(event), event: event %>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="timeline__empty">No events recorded yet.</p>
+    <% end %>
+  </section>
+<% end %>

@@ -80,14 +80,6 @@ class CounterTest < ActiveSupport::TestCase
     assert_equal 0, @article_recording.counter(:comments)
   end
 
-  test "counter is not affected by non-countable child recordings" do
-    # Publication state is not countable
-    @article_recording.publish!
-
-    assert_equal 0, @article_recording.counter(:comments)
-    assert_equal 0, @article_recording.counter(:publication_states)
-  end
-
   test "counter update failure rolls back comment creation" do
     # Create a comment first to verify the transaction rollback
     initial_count = @article_recording.comments.count

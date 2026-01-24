@@ -1,33 +1,42 @@
 module Publisher
   extend ActiveSupport::Concern
 
-  def publication_recording
-    return nil unless recordable.publishable?
 
-    children.find_by(recordable_type: "PublicationState")
+  included do
+    has_one :publication, dependent: :destroy
+
+    scope :published, -> { joins(:publication) }
+    scope :unpublished, -> { left_joins(:publication).where.missing(:publication) }
   end
 
   def published?
-    publication_recording&.recordable&.published? || false
+    publication.present?
   end
 
   def publish!
     return unless recordable.publishable?
+    return if published?
 
-    if publication_recording
-      publication_recording.update!(recordable: PublicationState.published)
-    else
-      children.create!(recordable: PublicationState.published)
-    end
+    create_publication!
+    track_publication_event("published")
   end
 
   def unpublish!
     return unless recordable.publishable?
+    return unless published?
 
-    if publication_recording
-      publication_recording.update!(recordable: PublicationState.not_published)
-    else
-      children.create!(recordable: PublicationState.not_published)
-    end
+    publication.destroy!
+    reload_publication
+    track_publication_event("unpublished")
+  end
+
+  private
+
+  def track_publication_event(action)
+    events.create!(
+      subject: recordable,
+      action: action,
+      person_id: Current.person&.id
+    )
   end
 end

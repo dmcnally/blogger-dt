@@ -1,0 +1,7 @@
+<li class="timeline__entry">
+  <%= event.person&.person_card&.name || "Someone" %>
+  <time class="timeline__time" datetime="<%= event.created_at.iso8601 %>">
+    <%= time_ago_in_words(event.created_at) %> ago
+  </time>
+  <%= yield %>
+</li>

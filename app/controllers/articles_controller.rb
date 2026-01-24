@@ -1,4 +1,5 @@
 class ArticlesController < ApplicationController
+  allow_unauthenticated_access only: %i[ index show ]
   before_action :set_recording, only: [ :show, :edit, :update, :destroy ]
 
   def index

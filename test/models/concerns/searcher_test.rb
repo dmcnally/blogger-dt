@@ -20,13 +20,6 @@ class SearcherTest < ActiveSupport::TestCase
     assert_includes content, "web framework"
   end
 
-  test "does not create search_index for non-searchable recordables" do
-    publication_state = PublicationState.published
-    publication_recording = @article_recording.children.create!(recordable: publication_state)
-
-    assert_nil publication_recording.search_index
-  end
-
   # search_index updates
 
   test "updates search_index when recordable changes" do

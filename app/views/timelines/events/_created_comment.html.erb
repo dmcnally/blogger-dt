@@ -1,0 +1,5 @@
+<%= render "timelines/events/wrapper", event: event do %>
+  <p class="timeline__comment">
+    <%= truncate(event.subject.body, length: 100) %>
+  </p>
+<% end %>

@@ -67,7 +67,7 @@ class TimelineTest < ActiveSupport::TestCase
     comment = Comment.new(body: "Test comment")
     child_recording = @root_recording.children.create!(recordable: comment)
 
-    ancestor = child_recording.ancestor_recording(PublicationState)
+    ancestor = child_recording.ancestor_recording(PersonCard)
 
     assert_nil ancestor
   end
@@ -117,7 +117,7 @@ class TimelineTest < ActiveSupport::TestCase
     child_recording = @root_recording.children.create!(recordable: comment)
     event = child_recording.events.first
 
-    ancestor_subject = child_recording.ancestor_at(PublicationState, event)
+    ancestor_subject = child_recording.ancestor_at(PersonCard, event)
 
     assert_nil ancestor_subject
   end

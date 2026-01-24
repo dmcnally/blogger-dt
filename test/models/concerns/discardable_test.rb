@@ -89,18 +89,9 @@ class DiscardableTest < ActiveSupport::TestCase
     comment = Comment.new(body: "Test comment")
     comment_recording = @recording.children.create!(recordable: comment)
 
-    Tag.named("ruby")
-    @recording.tag!("ruby")
-    tag_recording = @recording.tag_recordings.first
-
-    @recording.publish!
-    publication_recording = @recording.publication_recording
-
     @recording.discard!
 
     assert comment_recording.reload.discarded?
-    assert tag_recording.reload.discarded?
-    assert publication_recording.reload.discarded?
   end
 
   test "discarding comment discards child comments" do
@@ -113,16 +104,6 @@ class DiscardableTest < ActiveSupport::TestCase
     comment_recording.discard!
 
     assert reply_recording.reload.discarded?
-  end
-
-  test "discarding tag does not cascade" do
-    Tag.named("ruby")
-    @recording.tag!("ruby")
-    tag_recording = @recording.tag_recordings.first
-
-    tag_recording.discard!
-
-    refute @recording.reload.discarded?
   end
 
   # Event immutability

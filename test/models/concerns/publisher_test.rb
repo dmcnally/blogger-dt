@@ -6,81 +6,68 @@ class PublisherTest < ActiveSupport::TestCase
     @recording = Recording.create!(recordable: @article)
   end
 
-  test "published? returns false when no publication recording exists" do
+  test "published? returns false when no publication exists" do
     refute @recording.published?
   end
 
-  test "publish! creates publication recording with published state" do
+  test "published? returns true when publication exists" do
     @recording.publish!
     assert @recording.published?
-    assert_equal PublicationState::PUBLISHED, @recording.publication_recording.recordable.state
   end
 
-  test "unpublish! creates publication recording with notPublished state when none exists" do
-    @recording.unpublish!
-    refute @recording.published?
-    assert_equal PublicationState::NOT_PUBLISHED, @recording.publication_recording.recordable.state
+  test "publish! creates publication" do
+    assert_difference -> { Publication.count }, 1 do
+      @recording.publish!
+    end
+    assert @recording.publication.present?
   end
 
-  test "publish! updates existing publication recording to published" do
-    @recording.unpublish!
-    refute @recording.published?
-
+  test "publish! is idempotent" do
     @recording.publish!
-    assert @recording.published?
-
-    # Should still only have one publication recording
-    assert_equal 1, @recording.children.where(recordable_type: "PublicationState").count
+    assert_no_difference -> { Publication.count } do
+      @recording.publish!
+    end
   end
 
-  test "unpublish! updates existing publication recording to notPublished" do
+  test "unpublish! destroys publication" do
     @recording.publish!
-    assert @recording.published?
-
-    @recording.unpublish!
+    assert_difference -> { Publication.count }, -1 do
+      @recording.unpublish!
+    end
     refute @recording.published?
+  end
 
-    # Should still only have one publication recording
-    assert_equal 1, @recording.children.where(recordable_type: "PublicationState").count
+  test "unpublish! does nothing when not published" do
+    assert_no_difference -> { Publication.count } do
+      @recording.unpublish!
+    end
   end
 
   test "publish! does nothing when recordable is not publishable" do
     comment = Comment.new(body: "Test comment")
     comment_recording = @recording.children.create!(recordable: comment)
 
-    comment_recording.publish!
-    assert_nil comment_recording.publication_recording
+    assert_no_difference -> { Publication.count } do
+      comment_recording.publish!
+    end
     refute comment_recording.published?
   end
 
-  test "publication_recording returns nil when recordable is not publishable" do
-    comment = Comment.new(body: "Test comment")
-    comment_recording = @recording.children.create!(recordable: comment)
-
-    assert_nil comment_recording.publication_recording
-  end
-
-  test "publication_recording.recordable returns the PublicationState" do
+  test "publish! creates event with published action on recording" do
     @recording.publish!
-    assert_equal PublicationState.published, @recording.publication_recording.recordable
+    event = @recording.events.find_by(action: "published")
+
+    assert event.present?
+    assert_equal @article, event.subject
   end
 
-  test "publish! creates event with published action" do
+  test "unpublish! creates event with unpublished action on recording" do
     @recording.publish!
-    publication_recording = @recording.publication_recording
-    event = publication_recording.events.last
-
-    assert_equal "published", event.action
-    assert_equal PublicationState.published, event.subject
-  end
-
-  test "unpublish! creates event with unpublished action" do
     @recording.unpublish!
-    publication_recording = @recording.publication_recording
-    event = publication_recording.events.last
+    event = @recording.events.find_by(action: "unpublished")
 
-    assert_equal "unpublished", event.action
-    assert_equal PublicationState.not_published, event.subject
+    assert event.present?
+    assert_equal @article, event.subject
   end
 
   test "toggling publish state creates events with correct actions" do
@@ -88,9 +75,48 @@ class PublisherTest < ActiveSupport::TestCase
     @recording.unpublish!
     @recording.publish!
 
-    publication_recording = @recording.publication_recording
-    actions = publication_recording.events.order(:created_at).pluck(:action)
+    actions = @recording.events.where(action: %w[published unpublished]).order(:created_at).pluck(:action)
 
     assert_equal %w[published unpublished published], actions
+  end
+
+  test "publication belongs to recording" do
+    @recording.publish!
+
+    assert_equal @recording, @recording.publication.recording
+  end
+
+  test "published scope returns only published recordings" do
+    another_article = Article.new(title: "Another Article", body: "Another body")
+    another_recording = Recording.create!(recordable: another_article)
+
+    @recording.publish!
+
+    published_recordings = Recording.published
+
+    assert_includes published_recordings, @recording
+    refute_includes published_recordings, another_recording
+  end
+
+  test "published scope returns empty when none are published" do
+    assert_empty Recording.published
+  end
+
+  test "unpublished scope returns only unpublished recordings" do
+    another_article = Article.new(title: "Another Article", body: "Another body")
+    another_recording = Recording.create!(recordable: another_article)
+
+    @recording.publish!
+
+    unpublished_recordings = Recording.unpublished
+
+    refute_includes unpublished_recordings, @recording
+    assert_includes unpublished_recordings, another_recording
+  end
+
+  test "unpublished scope excludes published recordings" do
+    @recording.publish!
+
+    refute_includes Recording.unpublished, @recording
   end
 end

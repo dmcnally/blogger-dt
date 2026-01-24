@@ -1,10 +1,6 @@
 /* Block: timeline */
 .timeline {
   margin-top: 2.5rem;
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
 }
 
 .timeline__title {
@@ -56,6 +52,17 @@
   color: #374151;
 }
 
+.timeline__quote {
+  flex-basis: 100%;
+  margin: 0.5rem 0 0 0;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid #d1d5db;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-style: italic;
+  font-size: 0.875rem;
+}
+
 .timeline__actor {
   color: #6b7280;
 }
@@ -64,6 +71,18 @@
   color: #9ca3af;
   margin-left: auto;
   font-size: 0.75rem;
+}
+
+.timeline__header {
+  color: #374151;
+  font-weight: 500;
+}
+
+.timeline__comment {
+  flex-basis: 100%;
+  margin: 0.25rem 0 0 0;
+  color: #4b5563;
+  font-size: 0.875rem;
 }
 
 .timeline__empty {

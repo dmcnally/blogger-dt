@@ -11,13 +11,13 @@
 # Default Bucket (must come first - recordings and events depend on it)
 Current.bucket = Bucket.find_or_create_by!(name: "Default")
 
-# PublicationState singletons
-PublicationState.published
-PublicationState.not_published
+# Default Person
+person_card = PersonCard.find_or_create_by!(first_name: "David", last_name: "McNally")
+recording = Recording.find_or_create_by!(recordable: person_card)
+person = Person.find_or_create_by!(recording: recording)
 
-# Default Person (until authentication is implemented)
-if Person.none?
-  person_card = PersonCard.create!(first_name: "David", last_name: "McNally")
-  recording = Recording.create!(recordable: person_card)
-  Person.create!(recording: recording)
+# Default User
+User.find_or_create_by!(email_address: "dave@makoo.com") do |user|
+  user.password = "testing"
+  user.person = person
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_24_161410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -64,6 +64,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
     t.index ["subject_type", "subject_id"], name: "index_events_on_subject_type_and_subject_id"
   end
 
+  create_table "memberships", force: :cascade do |t|
+    t.bigint "bucket_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "person_id", null: false
+    t.integer "role", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["bucket_id"], name: "index_memberships_on_bucket_id"
+    t.index ["person_id", "bucket_id"], name: "index_memberships_on_person_id_and_bucket_id", unique: true
+    t.index ["person_id"], name: "index_memberships_on_person_id"
+  end
+
   create_table "people", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "recording_id", null: false
@@ -76,9 +87,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
     t.string "last_name"
   end
 
-  create_table "publication_states", force: :cascade do |t|
-    t.string "state", null: false
-    t.index ["state"], name: "index_publication_states_on_state", unique: true
+  create_table "publications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "recording_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recording_id"], name: "index_publications_on_recording_id", unique: true
   end
 
   create_table "recordings", force: :cascade do |t|
@@ -105,25 +118,42 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_080925) do
     t.index ["searchable"], name: "index_search_indices_on_searchable", using: :gin
   end
 
-  create_table "tag_states", force: :cascade do |t|
-    t.boolean "available", default: true, null: false
+  create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "tag_id", null: false
+    t.string "ip_address"
     t.datetime "updated_at", null: false
-    t.index ["tag_id"], name: "index_tag_states_on_tag_id", unique: true
+    t.string "user_agent"
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "name", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email_address", null: false
+    t.string "password_digest", null: false
+    t.bigint "person_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["person_id"], name: "index_users_on_person_id"
   end
 
   add_foreign_key "event_details", "events"
   add_foreign_key "events", "buckets"
   add_foreign_key "events", "people"
+  add_foreign_key "memberships", "buckets"
+  add_foreign_key "memberships", "people"
   add_foreign_key "people", "recordings"
+  add_foreign_key "publications", "recordings"
   add_foreign_key "recordings", "buckets"
   add_foreign_key "recordings", "recordings", column: "parent_id"
   add_foreign_key "search_indices", "recordings"
-  add_foreign_key "tag_states", "tags"
+  add_foreign_key "sessions", "users"
+  add_foreign_key "users", "people"
 end
