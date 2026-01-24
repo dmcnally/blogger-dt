@@ -1,7 +1,5 @@
 class Article < ApplicationRecord
   include Recordable
-  include Describable
-  include Searchable
 
   validates :title, presence: true
 
