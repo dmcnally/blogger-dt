@@ -2,7 +2,7 @@ module Tree
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :parent, class_name: name, optional: true
+    belongs_to :parent, class_name: name, optional: true, touch: true
     has_many :children, class_name: name, foreign_key: :parent_id, dependent: :restrict_with_exception
   end
 

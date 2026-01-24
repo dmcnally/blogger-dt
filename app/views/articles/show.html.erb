@@ -33,6 +33,7 @@
 
   <%# Timeline Section %>
   <%= turbo_stream_from @recording, "timeline" %>
+  <h3 class="timeline__title">Timeline</h3>
   <%= render "timelines/timeline", recording: @recording %>
 
   <%# Comments Section %>

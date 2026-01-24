@@ -97,4 +97,18 @@ class TreeTest < ActiveSupport::TestCase
     assert_includes descendants, grandchild
     assert_equal 2, descendants.size
   end
+
+  # touch parent
+
+  test "updating a child touches the parent's updated_at" do
+    comment = Comment.new(body: "Test comment")
+    child_recording = @root_recording.children.create!(recordable: comment)
+
+    original_updated_at = @root_recording.updated_at
+    travel 1.second do
+      child_recording.update!(recordable: Comment.new(body: "Updated comment"))
+    end
+
+    assert_operator @root_recording.reload.updated_at, :>, original_updated_at
+  end
 end
