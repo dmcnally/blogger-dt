@@ -1,0 +1,31 @@
+<div class="login">
+  <div class="login__card">
+    <h1 class="login__title">Sign in</h1>
+
+    <% if flash[:alert] %>
+      <div class="login__alert"><%= flash[:alert] %></div>
+    <% end %>
+
+    <% if flash[:notice] %>
+      <div class="login__notice"><%= flash[:notice] %></div>
+    <% end %>
+
+    <%= form_with url: session_path, class: "login__form" do |form| %>
+      <div class="form-field">
+        <%= form.label :email_address, "Email address", class: "form-field__label" %>
+        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com", value: params[:email_address], class: "form-field__input" %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :password, "Password", class: "form-field__label" %>
+        <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "form-field__input" %>
+      </div>
+
+      <%= form.submit "Sign in", class: "btn btn--primary login__submit" %>
+    <% end %>
+
+    <div class="login__footer">
+      <%= link_to "Forgot password?", new_password_path, class: "login__link" %>
+    </div>
+  </div>
+</div>

@@ -11,9 +11,16 @@
 # Default Bucket (must come first - recordings and events depend on it)
 Current.bucket = Bucket.find_or_create_by!(name: "Default")
 
-# Default Person (until authentication is implemented)
+# Default Person
 if Person.none?
   person_card = PersonCard.create!(first_name: "David", last_name: "McNally")
   recording = Recording.create!(recordable: person_card)
   Person.create!(recording: recording)
+end
+
+# Default User
+person = Person.first
+User.find_or_create_by!(email_address: "dave@makoo.com") do |user|
+  user.password = "testing"
+  user.person = person
 end

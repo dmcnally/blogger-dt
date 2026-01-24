@@ -1,0 +1,14 @@
+<header class="site-header">
+  <div class="site-header__container">
+    <%= link_to "Blogger", root_path, class: "site-header__brand" %>
+
+    <nav class="site-header__nav">
+      <% if authenticated? %>
+        <span class="site-header__user"><%= Current.user.email_address %></span>
+        <%= button_to "Sign out", session_path, method: :delete, class: "site-header__link site-header__link--logout" %>
+      <% else %>
+        <%= link_to "Sign in", new_session_path, class: "site-header__link" %>
+      <% end %>
+    </nav>
+  </div>
+</header>

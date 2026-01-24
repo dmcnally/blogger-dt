@@ -25,6 +25,7 @@
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 
 .form-field__input:focus {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_23_084303) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_24_144151) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -107,11 +107,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_23_084303) do
     t.index ["searchable"], name: "index_search_indices_on_searchable", using: :gin
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "ip_address"
+    t.datetime "updated_at", null: false
+    t.string "user_agent"
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email_address", null: false
+    t.string "password_digest", null: false
+    t.bigint "person_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["person_id"], name: "index_users_on_person_id"
   end
 
   add_foreign_key "event_details", "events"
@@ -122,4 +141,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_23_084303) do
   add_foreign_key "recordings", "buckets"
   add_foreign_key "recordings", "recordings", column: "parent_id"
   add_foreign_key "search_indices", "recordings"
+  add_foreign_key "sessions", "users"
+  add_foreign_key "users", "people"
 end

@@ -4,6 +4,7 @@ class PublicationsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @article = Article.new(title: "Test Article", body: "Test body")
     @recording = Recording.create!(recordable: @article)
+    sign_in_as users(:one)
   end
 
   test "create publishes the recording" do
