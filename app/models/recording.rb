@@ -16,6 +16,7 @@ class Recording < ApplicationRecord
   delegated_type :recordable, types: RECORDABLE_TYPES, autosave: true
 
   validates_associated :recordable
+  validate :bucket_matches_parent, if: :parent
 
   # Identify as the delegated type for routing purposes
   def model_name
@@ -23,6 +24,12 @@ class Recording < ApplicationRecord
   end
 
   private
+
+  def bucket_matches_parent
+    if bucket != parent.bucket
+      errors.add(:bucket, "must match parent's bucket")
+    end
+  end
 
   # Eventable implementation
   def current_subject = recordable

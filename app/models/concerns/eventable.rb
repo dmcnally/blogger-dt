@@ -16,6 +16,7 @@ module Eventable
 
   def track_created
     events.create!(
+      bucket: bucket,
       subject: current_subject,
       action: action_for_create,
       person_id: current_person_id
@@ -24,6 +25,7 @@ module Eventable
 
   def track_updated
     events.create!(
+      bucket: bucket,
       subject: current_subject,
       subject_previous_type: previous_subject_type,
       subject_previous_id: previous_subject_id,
@@ -34,6 +36,7 @@ module Eventable
 
   def track_discarded
     events.create!(
+      bucket: bucket,
       subject: current_subject,
       action: "discarded",
       person_id: current_person_id
