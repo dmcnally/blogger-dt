@@ -73,12 +73,6 @@
   color: #9ca3af;
 }
 
-.article-card__actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-left: 1rem;
-}
-
 /* Block: article-list */
 .article-list {
   display: flex;
