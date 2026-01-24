@@ -1,7 +1,7 @@
 class Event < ApplicationRecord
   include Bucketable
 
-  belongs_to :eventable, polymorphic: true
+  belongs_to :eventable, polymorphic: true, touch: true
   belongs_to :subject, polymorphic: true
   belongs_to :subject_previous, polymorphic: true, optional: true
   belongs_to :person, optional: true
