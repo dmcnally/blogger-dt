@@ -16,7 +16,7 @@ module Comment::Broadcastable
     )
   end
 
-  def broadcast_on_destroy(recording)
+  def broadcast_on_discard(recording)
     Turbo::StreamsChannel.broadcast_remove_to(
       recording.parent, "comments",
       target: ActionView::RecordIdentifier.dom_id(recording)
