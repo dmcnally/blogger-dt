@@ -2,9 +2,24 @@
 
 **Validation Date:** January 24, 2026  
 **Validator:** Independent Code Analysis Agent  
-**Status:** CONFIRMED  
-**Severity:** Medium  
+**Status:** LOW PRIORITY  
+**Severity:** Low  
 **Category:** Concern Design / Performance
+
+---
+
+## Mitigation Notes (January 25, 2026)
+
+The recursive N+1 pattern exists but is effectively mitigated by:
+
+1. **Fragment caching** - The timeline view wraps output in `<%= cache recording do %>`, so `descendants` only runs on cache miss
+2. **Bounded tree depth** - Comment trees are typically shallow (3-5 levels)
+3. **Slim model** - Recording is a thin wrapper; individual queries are fast
+4. **Proper indexes exist** - `index_recordings_on_parent_id` supports CTE optimization if needed
+
+**Actual usage:** `descendants` is only called in `Timeline#timeline_events`, which is cached.
+
+**Future optimization:** If performance becomes an issue, a PostgreSQL recursive CTE can replace the Ruby recursion with a single query. Required indexes already exist.
 
 ---
 
