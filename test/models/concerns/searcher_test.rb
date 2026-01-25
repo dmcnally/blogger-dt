@@ -30,13 +30,13 @@ class SearcherTest < ActiveSupport::TestCase
     refute_includes @article_recording.search_index.content, "Ruby on Rails"
   end
 
-  test "destroys old search_index when recordable changes" do
+  test "keeps same search_index record when recordable changes" do
     old_search_index_id = @article_recording.search_index.id
 
     new_article = Article.new(title: "New Article", body: "New content")
     @article_recording.update!(recordable: new_article)
 
-    refute SearchIndex.exists?(old_search_index_id)
+    assert_equal old_search_index_id, @article_recording.search_index.id
   end
 
   # Recording.search

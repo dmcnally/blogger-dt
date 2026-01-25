@@ -23,11 +23,15 @@ module Searcher
   end
 
   def update_search_index
-    search_index&.destroy
-    create_search_index!(
-      recordable_type: recordable_type,
-      content: recordable.searchable_content
+    SearchIndex.upsert(
+      {
+        recording_id: id,
+        recordable_type: recordable_type,
+        content: recordable.searchable_content
+      },
+      unique_by: :recording_id
     )
+    association(:search_index).reload
   end
 
   def destroy_search_index

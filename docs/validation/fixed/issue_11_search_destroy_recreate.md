@@ -2,9 +2,10 @@
 
 **Validation Date:** January 24, 2026  
 **Validator:** Independent Code Analysis Agent  
-**Status:** CONFIRMED  
+**Status:** FIXED  
 **Severity:** Low  
-**Category:** Performance
+**Category:** Performance  
+**Resolution Date:** January 25, 2026
 
 ---
 
@@ -99,6 +100,35 @@ docker compose exec web rails runner "
 
 ---
 
+## Resolution
+
+The `update_search_index` method was refactored to use `upsert` with `unique_by: :recording_id`:
+
+```ruby
+def update_search_index
+  SearchIndex.upsert(
+    {
+      recording_id: id,
+      recordable_type: recordable_type,
+      content: recordable.searchable_content
+    },
+    unique_by: :recording_id
+  )
+  association(:search_index).reload
+end
+```
+
+**Benefits:**
+- Single atomic database operation instead of two
+- No gap where search index doesn't exist
+- Eliminates potential race conditions
+- Preserves the same record ID (row updated in place)
+
+**Test updates:**
+- Updated test "destroys old search_index when recordable changes" to "keeps same search_index record when recordable changes" to reflect the new behavior
+
+---
+
 ## Conclusion
 
-The issue is **confirmed valid**. The destroy/recreate pattern should be replaced with an upsert for better performance and atomicity.
+The issue has been **fixed**. The destroy/recreate pattern was replaced with an atomic upsert operation.
