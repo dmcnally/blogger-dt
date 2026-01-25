@@ -106,3 +106,33 @@ Reference `publication_toggle.css` and `publications/_toggle.html.erb` as the ca
 2. Define the block and its elements/modifiers
 3. Use semantic class names that describe purpose, not appearance
 4. Add hover/focus states with `transition` for smooth effects
+
+## Creator Controller
+
+Use the `creator` Stimulus controller to mark elements created by the current user.
+
+### Wrapper Pattern (Preferred)
+
+Attach the controller to a container, use targets on individual items:
+
+```erb
+<div class="comments-section" 
+     data-controller="creator" 
+     data-creator-mine-class="comment--mine">
+  <%= render @comments %>
+</div>
+```
+
+```erb
+<%# _comment.html.erb - target only, no controller %>
+<div class="comment"
+     data-creator-target="creation"
+     data-creator-id="<%= comment_recording.creator.id %>">
+```
+
+### Data Attributes
+
+- `data-controller="creator"` - attach to wrapper element
+- `data-creator-mine-class` - BEM modifier class to add (e.g., `comment--mine`)
+- `data-creator-target="creation"` - mark each item as a target
+- `data-creator-id` - the creator's person ID
