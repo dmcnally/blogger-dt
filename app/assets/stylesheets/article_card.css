@@ -84,10 +84,10 @@
   display: none;
   position: relative;
   z-index: 1;
-}
 
-.article-card--mine .article-card__actions {
-  display: block;
+  .article-card--mine & {
+    display: block;
+  }
 }
 
 .article-card__edit-link {
