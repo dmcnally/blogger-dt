@@ -1,5 +1,5 @@
 ---
-description: Model patterns for delegated types, Recording/Recordable, state recordables, and Person identity
+description: Model patterns for delegated types, Recording/Recordable, state representation, and Person identity
 globs:
   - app/models/**/*.rb
   - db/migrate/*.rb
@@ -55,9 +55,9 @@ create_table :articles do |t|
 end
 ```
 
-## State as Recordables
+## State Representation
 
-Represent state changes as child recordings, NOT as fields on the parent model.
+Avoid storing state as fields on recordables. Instead, choose the appropriate pattern based on the type of state.
 
 ### Avoid
 
@@ -68,25 +68,49 @@ class Article < ApplicationRecord
 end
 ```
 
-### Prefer
+### Content State (Recordables)
 
-Create state recordables as children in the recording tree:
+For content evolution and versioning, use immutable recordables in the tree:
+
+- Article revisions, draft versions
+- Content that has intrinsic meaning
+- Data that benefits from tree structure
 
 ```ruby
-# app/models/article/published.rb
-class Article::Published < ApplicationRecord
+# app/models/article/revision.rb
+class Article::Revision < ApplicationRecord
   include Recordable
-  # Existence indicates "published" state
+  # Stores a version of article content
 end
 
-# Check state via children
-article_recording.children.exists?(recordable_type: 'Article::Published')
+# Access via children
+article_recording.children.where(recordable_type: 'Article::Revision')
 ```
 
-### Namespacing Rules
+### Operational Metadata (Join Models)
 
-- **Model-specific states**: Namespace under parent (e.g., `Article::Published`, `Article::Featured`)
-- **Shared states**: Top level without namespace (e.g., `Archived` used by multiple models)
+For visibility and access control, use lightweight join models:
+
+- Publication state (published/unpublished)
+- Feature flags, visibility toggles
+- Query-optimized boolean states
+
+Example - the `Publication` model:
+
+```ruby
+class Publication < ApplicationRecord
+  belongs_to :recording
+end
+
+# In Publisher concern - enables efficient scopes
+scope :published, -> { joins(:publication) }
+scope :unpublished, -> { left_joins(:publication).where.missing(:publication) }
+```
+
+This pattern provides:
+- Simple, fast, indexable queries
+- Easy pagination of published content
+- Events track publish/unpublish actions without polluting the recording tree
 
 ## Person Model Pattern
 
