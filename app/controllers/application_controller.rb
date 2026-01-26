@@ -6,13 +6,11 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
-  before_action :set_current_person
+  before_action :set_current_bucket
 
   private
 
-  def set_current_person
-    # TODO: Replace with current_user.person when authentication is added
-    Current.person = Person.first
+  def set_current_bucket
     Current.bucket = Bucket.first
   end
 end

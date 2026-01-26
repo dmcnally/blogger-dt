@@ -8,7 +8,7 @@
 
   <%= turbo_frame_tag "articles" do %>
     <% if @recordings.any? %>
-      <div class="article-list">
+      <div class="article-list" data-controller="created-by-current-user" data-created-by-current-user-mine-class="article-card--mine">
         <%= render partial: "article", collection: @recordings, as: :recording %>
       </div>
     <% else %>
