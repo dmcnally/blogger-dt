@@ -29,8 +29,6 @@ services:
       DOMAIN_NAME: localhost:3000
       NOTIFICATION_EMAILS_SENDER: notifications@localhost.dev
     depends_on:
-      assets:
-        condition: service_started
       postgres:
         condition: service_healthy
       mailcatcher:
@@ -38,16 +36,6 @@ services:
     tty: true
     stdin_open: true
     pid: host
-
-  assets:
-    image: dmcnally/common-ruby:development-${APP_VERSION}
-    env_file:
-      - developer.env
-    command: rake dartsass:watch
-    volumes:
-      - .:/app
-      - rubygems:/rubygems
-    environment: *environment
 
   postgres:
     image: postgres:16.3

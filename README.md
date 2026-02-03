@@ -8,7 +8,7 @@ It is as simple as cloning the repository and running a couple of make tasks:
 
 ```
 make up
-make web_server
+make server
 ```
 Connect to the site as http://localhost:3000
 
