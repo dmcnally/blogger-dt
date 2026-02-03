@@ -4,13 +4,15 @@ A Rails application demonstrating the Recording/Recordable delegated type patter
 
 ## Getting Started
 
-It is as simple as cloning the repository and running a couple of make tasks:
+If you're running Docker it is as simple as cloning the repository and running a couple of make tasks:
 
 ```
 make up
 make server
 ```
 Connect to the site as http://localhost:3000
+
+If you're not running Docker then you'll have to figure things out for yourself.
 
 ## Architecture Overview
 
