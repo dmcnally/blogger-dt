@@ -2,6 +2,16 @@
 
 A Rails application demonstrating the Recording/Recordable delegated type pattern for content management with built-in event tracking and tree-based relationships.
 
+## Getting Started
+
+It is as simple as cloning the repository and running a couple of make tasks:
+
+```
+make up
+make web_server
+```
+Connect to the site as http://localhost:3000
+
 ## Architecture Overview
 
 This application uses a **delegated type pattern** where `Recording` serves as a polymorphic wrapper around immutable content types called **Recordables**. This design provides uniform behavior across all content types while maintaining clean separation of concerns.
