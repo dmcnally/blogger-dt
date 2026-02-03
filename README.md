@@ -86,7 +86,7 @@ This trades explicit type-safe associations for:
 - **Composable relationships**: Any recordable can potentially parent any other
 - **Consistent patterns**: State (`PublicationState`) and content (`Comment`) use identical relationship patterns
 
-The trade-off is that you lose compile-time type safety of `article.comments` returning only comments. Instead, you filter by `recordable_type` at the recording level.
+The trade-off is that you lose direct association semantics where `article.comments` returns Comment objects. Instead, you query through recordings and filter by `recordable_type` at the recording level.
 
 ## Recordable Immutability
 
