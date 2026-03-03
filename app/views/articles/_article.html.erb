@@ -1,5 +1,7 @@
 <%= turbo_stream_from recording %>
-<article class="article-card">
+<article class="article-card"
+         data-created-by-current-user-target="creation"
+         data-creator-id="<%= recording.creator.id %>">
   <div class="article-card__layout">
     <div class="article-card__content">
       <h2 class="article-card__title">
@@ -16,6 +18,9 @@
           comments
         </span>
       </p>
+    </div>
+    <div class="article-card__actions">
+      <%= link_to "Edit", edit_article_path(recording), class: "article-card__edit-link", data: { turbo_frame: "_top" } %>
     </div>
   </div>
 </article>

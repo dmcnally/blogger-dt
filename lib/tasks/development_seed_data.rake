@@ -11,7 +11,7 @@ end
 
 def seed_star_trek_articles
   Current.bucket = Bucket.find_or_create_by!(name: "Default")
-  Current.person = Person.first
+  Current.user = User.find_or_create_by!(email_address: "dave@makoo.com")
 
   articles_data = [
     {

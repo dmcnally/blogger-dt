@@ -18,7 +18,9 @@ module ActiveSupport
       Current.bucket = Bucket.find_or_create_by!(name: "Test")
       person_card = PersonCard.create!(first_name: "Test", last_name: "User")
       recording = Recording.create!(recordable: person_card)
-      Current.person = Person.create!(recording: recording)
+      person = Person.create!(recording: recording)
+      user = User.create!(email_address: "test@example.com", password: "password", person: person)
+      Current.session = Session.create!(user: user)
     end
 
     teardown do

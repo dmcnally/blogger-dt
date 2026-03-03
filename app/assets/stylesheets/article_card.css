@@ -80,6 +80,29 @@
   color: #9ca3af;
 }
 
+.article-card__actions {
+  display: none;
+  position: relative;
+  z-index: 1;
+
+  .article-card--mine & {
+    display: block;
+  }
+}
+
+.article-card__edit-link {
+  font-size: 0.875rem;
+  color: #2563eb;
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease;
+}
+
+.article-card__edit-link:hover {
+  background-color: #eff6ff;
+}
+
 /* Block: article-list */
 .article-list {
   display: flex;
